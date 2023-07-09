@@ -25,7 +25,7 @@ export default function Navbar() {
         <div id="page">
             <div id="navbar-outer">
                 <div id="navbar-content">
-                    <img src="./assets/logo.svg" alt=""/>
+                    <img src="/assets/logo.svg" alt=""/>
                     <h2 style={{fontSize: windowWidth < 500 ? "1em" : "1.5em"}}>
                         Employee Management
                     </h2>
