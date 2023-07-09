@@ -1,0 +1,11 @@
+.navbar-option {
+    background: #243a47;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar-option:hover {
+    background: #021825;
+    cursor: pointer;
+}
