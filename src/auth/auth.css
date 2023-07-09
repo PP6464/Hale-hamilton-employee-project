@@ -1,0 +1,31 @@
+#auth-outer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(90vh - 20px);
+}
+
+#auth-logo {
+    width: min(50%, 400px);
+}
+
+#auth-button:hover {
+    cursor: pointer;
+    background: #0088dd;
+}
+
+#auth-button {
+    background: #0099ff;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+#auth-button img {
+    height: 25px;
+    padding-right: 7.5px;
+}
