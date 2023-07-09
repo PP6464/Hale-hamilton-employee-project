@@ -16,7 +16,7 @@ function App(props: AppProps) {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Navbar/>}>
+                <Route path="/" element={<Navbar state={props.appState}/>}>
                     <Route index element={<Auth logIn={props.logIn}/>}/>
                     <Route path="/home" element={<Home/>}/>
                 </Route>
