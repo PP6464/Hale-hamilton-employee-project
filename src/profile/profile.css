@@ -1,7 +1,7 @@
 #profile-user-pic {
   height: min(300px, 40%);
   width: min(300px, 40%);
-  border-radius: 50%;
+  border-radius: 500vw;
   border: 5px solid black;
   box-shadow: 0 0 10px #000;
   margin: 5px;
@@ -19,12 +19,16 @@
   background: #ff5858;
   color: black;
   padding: 10px;
-  margin-top: 10px;
+  margin-top: 0;
+}
+
+#modify-profile-button {
+  margin-top: 2px;
 }
 
 #modify-profile-button:hover,
 #save-profile-button:hover {
-  background: #ee4747;
+  background: #dd3636;
   cursor: pointer;
 }
 
@@ -35,4 +39,22 @@
   border: none;
   box-shadow: 0 0 5px #555;
   width: min(400px, 75vw);
+  margin: 10px 0;
+}
+
+#use-initials-button,
+#revert-to-normal-button,
+#choose-file-button {
+  border: none;
+  background: #7575ff;
+  padding: 7.5px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+#use-initials-button:hover,
+#choose-file-button:hover,
+#revert-to-normal-button:hover {
+  background: #5858ff;
+  cursor: pointer;
 }
