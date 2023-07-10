@@ -1,7 +1,6 @@
 export type AppState = {
-    uid: string | null;
+    user: User | null;
     accessToken: string | null;
-    userIsAdmin: boolean;
 };
 
 type Action = {
@@ -9,10 +8,17 @@ type Action = {
     payload: any;
 };
 
+export type User = {
+    name: string,
+    photoURL: string,
+    email: string,
+    isAdmin: boolean,
+    uid: string,
+}
+
 const initialState: AppState = {
-    uid: null,
+    user: null,
     accessToken: null,
-    userIsAdmin: false,
 };
 
 function reducer(state = initialState, action: Action) {
@@ -20,9 +26,9 @@ function reducer(state = initialState, action: Action) {
         case "logIn":
             return {
                 ...state,
-                uid: action.payload.uid,
+                uid: action.payload.user.uid,
                 accessToken: action.payload.accessToken,
-                userIsAdmin: action.payload.userIsAdmin,
+                userIsAdmin: action.payload.user.userIsAdmin,
             };
         default:
             return state;

@@ -1,7 +1,9 @@
-export const logIn = (uid: string, accessToken: string, userIsAdmin: boolean) => ({
+import { User } from "./state";
+
+export const logIn = (user: User, accessToken: string) => ({
     type: "logIn",
     payload: {
-        uid: uid,
-        userIsAdmin: userIsAdmin
+        user: user,
+        accessToken: accessToken,
     }
 });
