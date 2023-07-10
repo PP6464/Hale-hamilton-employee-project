@@ -14,7 +14,7 @@ import Reports from "./reports/reports";
 
 interface AppProps {
     appState: AppState;
-    logIn: (uid: string, accessToken: string, userIsAdmin: boolean) => {};
+    logIn: (user: User, accessToken: string) => {};
 }
 
 function App(props: AppProps) {
