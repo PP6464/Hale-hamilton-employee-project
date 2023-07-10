@@ -1,4 +1,3 @@
-import "./styles.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { AppState, User } from "./redux/state";
