@@ -1,8 +1,9 @@
 import "./auth.css";
-import {auth, microsoftProvider, firestore} from "../firebase/firebase";
-import {signInWithPopup, OAuthProvider, signInWithCredential} from "firebase/auth";
-import {doc, getDoc, setDoc} from "firebase/firestore";
-import {useNavigate} from "react-router-dom";
+import { auth, microsoftProvider, firestore } from "../firebase/firebase";
+import { signInWithPopup, OAuthProvider, signInWithCredential } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 interface AuthProps {
     logIn: (uid: string, accessToken: string, userIsAdmin: boolean) => {};
@@ -10,6 +11,12 @@ interface AuthProps {
 
 export default function Auth(props: AuthProps) {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (auth.currentUser) {
+            navigate("/home");
+        }
+    }, []);
 
     async function signInWithMicrosoft() {
         try {
