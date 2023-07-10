@@ -1,4 +1,4 @@
-import React from "react";
+import "./navbar-option.css";
 
 interface NavbarOptionProps {
     onClick: () => void,
