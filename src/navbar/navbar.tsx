@@ -84,7 +84,7 @@ export default function Navbar(props: NavbarProps) {
               onClick={() => {
                 setIndex(4);
                 setMenuOn(false);
-                navigate("/chat");
+                navigate("/chat-with-others");
               }}
               title="Chat with others"
               selected={index === 4}
