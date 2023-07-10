@@ -6,6 +6,7 @@ import {logIn} from "./redux/actions";
 import Navbar from "./navbar/navbar";
 import Auth from "./auth/auth";
 import Home from "./home/home";
+import NoPage from "./no-page/no-page";
 
 interface AppProps {
     appState: AppState;
@@ -19,6 +20,10 @@ function App(props: AppProps) {
                 <Route path="/" element={<Navbar state={props.appState}/>}>
                     <Route index element={<Auth logIn={props.logIn}/>}/>
                     <Route path="/home" element={<Home/>}/>
+                    <Route path="/profile" element={<Profile/>}/>
+                    <Route path="/notifications" element={<Notifications/>}/>
+                    <Route path="/chat-with-others" element={<ChatWithOthers/>}/>
+                    <Route path="*" element={<NoPage state={props.appState}/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

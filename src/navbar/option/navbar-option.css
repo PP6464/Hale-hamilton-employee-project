@@ -9,3 +9,13 @@
     background: #021825;
     cursor: pointer;
 }
+
+.navbar-option[data-is-logout="true"] {
+    background: red;
+    color: white;
+}
+
+.navbar-option[data-is-logout="true"]:hover {
+    background: darkred;
+    cursor: pointer;
+}

@@ -1,5 +1,5 @@
 export type AppState = {
-    uid: number | null;
+    uid: string | null;
     accessToken: string | null;
     userIsAdmin: boolean;
 };
