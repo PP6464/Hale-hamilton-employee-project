@@ -1,26 +1,34 @@
 #page {
-    margin-top: calc(10vh + 20px);
+  margin-top: calc(10vh + 20px);
 }
 
 #navbar-outer {
-    width: 100vw;
-    height: calc(10vh + 20px);
-    box-shadow: 0 0 5px #cccccc;
-    background: #243a47;
-    color: white;
-    position: fixed;
-    top: 0;
+  width: 100vw;
+  height: calc(10vh + 20px);
+  box-shadow: 0 0 5px #cccccc;
+  background: #243a47;
+  color: white;
+  position: fixed;
+  top: 0;
 }
 
 #navbar-content {
-    width: 100%;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+#navbar-content h2 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #navbar-content img {
-    height: 10vh;
-    padding-right: 10px;
+  height: 10vh;
+  padding-right: 10px;
 }

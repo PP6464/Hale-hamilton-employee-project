@@ -1,0 +1,26 @@
+.employee-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.employee-card:hover {
+  cursor: pointer;
+  background: #eee;
+}
+
+.employee-card img {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+#employee-search-filter-value {
+  border: none;
+  background: #eee;
+  padding: 10px;
+  border-radius: 20px;
+  width: min(50vw, 400px);
+}
