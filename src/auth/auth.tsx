@@ -64,7 +64,10 @@ export default function Auth(props: AuthProps) {
         uid: user.uid,
       }, accessToken);
       navigate("/home");
-    } catch {
+    } catch (e: any) {
+      if (!(e instanceof Error)) return;
+      console.error(e.message);
+      console.error(e.stack);
       alert("An error has occured whilst logging in. Please retry logging in.");
     }
   }
