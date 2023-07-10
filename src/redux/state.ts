@@ -1,5 +1,3 @@
-import assert from "assert";
-
 export type AppState = {
   user: User | null;
   accessToken: string | null;
@@ -38,7 +36,6 @@ function reducer(state = initialState, action: Action) {
         accessToken: null,
       };
     case "updateUser":
-      assert(state.user !== null, Error("Null user cannot be updated"));
       return {
         ...state,
         user: {
