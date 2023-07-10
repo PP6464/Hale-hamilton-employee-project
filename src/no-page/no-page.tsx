@@ -1,12 +1,23 @@
 import "./no-page.css";
 import { Link } from "react-router-dom";
 import { AppState } from "../redux/state";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase/firebase";
 
 interface NoPageProps {
   state: AppState;
 }
 
 export default function NoPage(props: NoPageProps) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!auth.currentUser) {
+      navigate("/");
+    }
+  }, []);
+
   return (
     <div id="no-page-container">
       <h1>404</h1>
@@ -34,11 +45,7 @@ export default function NoPage(props: NoPageProps) {
           )}
         </ul>
       ) : (
-        <ul>
-          <li>
-            <Link to="/">Login</Link>
-          </li>
-        </ul>
+        <p>Redirecting you to login page ...</p>
       )}
     </div>
   );
