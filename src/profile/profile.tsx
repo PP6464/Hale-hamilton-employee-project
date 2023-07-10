@@ -3,7 +3,13 @@ import { AppState } from "../redux/state";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, firestore, storage } from "../firebase/firebase";
-import { uploadString, ref, getDownloadURL } from "firebase/storage";
+import {
+  uploadString,
+  ref,
+  getDownloadURL,
+  listAll,
+  deleteObject,
+} from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 import { updateDoc, doc } from "firebase/firestore";
 
@@ -15,14 +21,17 @@ interface ProfileProps {
 export default function Profile(props: ProfileProps) {
   const navigate = useNavigate();
   const [isModifyingProfile, setIsModifyingProfile] = useState(false);
-  const [name, setName] = useState(props.state.user?.name ?? "");
+  const [name, setName] = useState(auth.currentUser?.displayName ?? "");
   const [filePic, setFilePic] = useState<string | null>(null);
   const [photoURL, setPhotoURL] = useState(
-    props.state.user?.photoURL ??
+    auth.currentUser?.photoURL ??
       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
   );
 
   useEffect(() => {
+    console.log(props.state);
+    console.log(auth.currentUser?.displayName);
+    console.log(auth.currentUser?.photoURL);
     if (!auth.currentUser) {
       navigate("/");
     }
@@ -100,9 +109,14 @@ export default function Profile(props: ProfileProps) {
           </button>
           <button
             id="save-profile-button"
-            onClick={async (e) => {
-              e.preventDefault();
+            onClick={async () => {
               if (filePic !== null) {
+                const filesCurrentlyPresent = await listAll(
+                  ref(storage, `users/${props.state.user!.uid}`)
+                );
+                filesCurrentlyPresent.items.map(
+                  async (e) => await deleteObject(e)
+                );
                 const result = await uploadString(
                   ref(
                     storage,
@@ -113,12 +127,15 @@ export default function Profile(props: ProfileProps) {
                   filePic,
                   "data_url"
                 );
+                console.log("pu: " + (await getDownloadURL(result.ref)));
                 setPhotoURL(await getDownloadURL(result.ref));
               }
+              console.log("PHOTOURL: " + photoURL);
               await updateProfile(auth.currentUser!, {
                 displayName: name,
                 photoURL: photoURL,
               });
+              await auth.currentUser!.reload();
               await updateDoc(
                 doc(firestore, `users/${props.state.user!.uid}`),
                 {
@@ -128,7 +145,6 @@ export default function Profile(props: ProfileProps) {
               );
               props.updateUser(name, photoURL);
               toggleIsModifyingProfile();
-              return false;
             }}
           >
             Save Changes
@@ -136,12 +152,8 @@ export default function Profile(props: ProfileProps) {
         </div>
       ) : (
         <div className="container">
-          <img
-            src={props.state.user?.photoURL}
-            alt="User Pic"
-            id="profile-user-pic"
-          />
-          <h1>{props.state.user?.name}</h1>
+          <img src={photoURL} alt="User Pic" id="profile-user-pic" />
+          <h1>{name}</h1>
           <p>
             {props.state.user?.isAdmin ?? false
               ? "Administrator"
