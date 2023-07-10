@@ -11,7 +11,7 @@ export default function NoPage(props: NoPageProps) {
             <h1>404</h1>
             <p>This route is not valid. Please try visiting one of: </p>
             {
-                props.state.uid !== null ? <ul>
+                props.state.user !== null ? <ul>
                     <li>
                         <Link to="/home">Home</Link>
                     </li>
@@ -25,7 +25,7 @@ export default function NoPage(props: NoPageProps) {
                         <Link to="/notifications">Notifications</Link>
                     </li>
                     {
-                        props.state.userIsAdmin ? <li>
+                        props.state.user.isAdmin ? <li>
                             <Link to="/reports">Reports</Link>
                         </li> : <></>
                     }
