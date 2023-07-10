@@ -1,21 +1,23 @@
 .navbar-option {
-    background: #243a47;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background: #243a47;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
 }
 
 .navbar-option:hover {
-    background: #021825;
-    cursor: pointer;
+  background: #021825;
+  cursor: pointer;
 }
 
 .navbar-option[data-is-logout="true"] {
-    background: red;
-    color: white;
+  background: red;
+  color: white;
 }
 
 .navbar-option[data-is-logout="true"]:hover {
-    background: darkred;
-    cursor: pointer;
+  background: darkred;
+  cursor: pointer;
 }
