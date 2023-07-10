@@ -94,9 +94,9 @@ export default function Navbar(props: NavbarProps) {
                 onClick={() => {
                   setIndex(5);
                   setMenuOn(false);
-                  navigate("/report-page");
+                  navigate("/reports");
                 }}
-                title="Report Page"
+                title="Reports"
                 selected={index === 5}
               />
             ) : (
