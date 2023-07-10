@@ -1,5 +1,6 @@
 import "./auth.css";
 import { auth, microsoftProvider, firestore } from "../firebase/firebase";
+import { updateProfile } from "firebase/auth";
 import {
   signInWithPopup,
   OAuthProvider,
@@ -31,7 +32,8 @@ export default function Auth(props: AuthProps) {
       const user = (await signInWithCredential(auth, credential)).user;
       const firestoreUser = await getDoc(doc(firestore, `users/${user.uid}`));
       let isAdmin = false;
-      if (firestoreUser.exists()) {
+      let isNewUser = firestoreUser.exists()
+      if (isNewUser) {
         // Retrieve whether or not they are admin
         isAdmin = firestoreUser.get("isAdmin");
       } else {
@@ -45,17 +47,25 @@ export default function Auth(props: AuthProps) {
           await setDoc(doc(firestore, `users/${user.uid}`), {
             email: user.email ?? "blank-email@circor.com",
             name: user.displayName ?? "Blank display name",
-            photo:
-              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+            photo: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
             isAdmin: isAdmin,
+          });
+          await updateProfile(user, {
+            photoURL: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
           });
           break;
         }
       }
-      props.logIn(user.uid, accessToken, isAdmin);
+      props.logIn({
+        name: user.displayName!,
+        photoURL: isNewUser ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" : user.photoURL!,
+        email: user.email!,
+        isAdmin: isAdmin,
+        uid: user.uid,
+      }, accessToken);
       navigate("/home");
     } catch {
-      alert("An error has occured whilst logging in: please retry");
+      alert("An error has occured whilst logging in. Please retry logging in.");
     }
   }
 
