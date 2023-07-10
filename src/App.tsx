@@ -27,7 +27,7 @@ function App(props: AppProps) {
           element={<Navbar state={props.appState} logOut={props.logOut} />}
         >
           <Route index element={<Auth logIn={props.logIn} />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/home" element={<Home state={props.appState} />} />
           <Route
             path="/profile"
             element={
