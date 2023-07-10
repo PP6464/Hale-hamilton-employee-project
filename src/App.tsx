@@ -15,6 +15,7 @@ interface AppProps {
   appState: AppState;
   logIn: (user: User, accessToken: string) => {};
   logOut: () => {};
+  updateUser: (name?: string, photoURL?: string) => {};
 }
 
 function App(props: AppProps) {
@@ -27,7 +28,12 @@ function App(props: AppProps) {
         >
           <Route index element={<Auth logIn={props.logIn} />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/profile" element={<Profile state={props.appState} />} />
+          <Route
+            path="/profile"
+            element={
+              <Profile state={props.appState} updateUser={props.updateUser} />
+            }
+          />
           <Route
             path="/notifications"
             element={<Notifications state={props.appState} />}
