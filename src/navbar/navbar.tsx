@@ -1,15 +1,17 @@
 import "./navbar.css";
-import {useEffect, useState} from "react";
-import {Outlet, useLocation, useNavigate} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Menu from "@mui/icons-material/Menu";
 import Clear from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import ToggleIcon from "../toggle-icon/toggle-icon";
 import NavbarOption from "./option/navbar-option";
-import {AppState} from "../redux/state";
+import { AppState } from "../redux/state";
+import { auth } from "../firebase/firebase";
 
 interface NavbarProps {
     state: AppState
+    logOut: () => {}
 }
 
 export default function Navbar(props: NavbarProps) {
@@ -50,20 +52,32 @@ export default function Navbar(props: NavbarProps) {
                     )}
                 </div>
                 {
-                    menuOn ? <div id="navbar-menu">
+                    menuOn && location.pathname !== "/" ? <div id="navbar-menu">
                         <NavbarOption onClick={() => {
                             setIndex(1);
                             navigate("/home");
                         }} title="Home" selected={index === 1}/>
                         <NavbarOption onClick={() => {
+                            setIndex(2);
+                            navigate("/profile");
                         }} title="Profile" selected={index === 2}/>
                         <NavbarOption onClick={() => {
+                            setIndex(3);
+                            navigate("/notifications");
                         }} title="Notifications" selected={index === 3}/>
                         <NavbarOption onClick={() => {
+                            setIndex(4);
+                            navigate("/chat");
                         }} title="Chat with others" selected={index === 4}/>
-                        {props.state.userIsAdmin ? <NavbarOption onClick={() => {
+                        {props.state.user!.isAdmin ? <NavbarOption onClick={() => {
+                            setIndex(5);
+                            navigate("/report-page");
                         }} title="Report Page" selected={index === 5}/> : <></>}
-                        {props.state.userIsAdmin ? <NavbarOption onClick={() => {
+                        {props.state.user !== null ? <NavbarOption onClick={async () => {
+                            setIndex(6);
+                            props.logOut();
+                            await auth.signOut();
+                            navigate("/");
                         }} title="Log out" selected={false}/> : <></>}
                     </div> : <></>
                 }
