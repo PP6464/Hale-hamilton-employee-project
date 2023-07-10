@@ -1,5 +1,5 @@
-import {Link} from "react-router-dom";
-import {AppState} from "../redux/state";
+import { Link } from "react-router-dom";
+import { AppState } from "../redux/state";
 
 interface NoPageProps {
     state: AppState,
