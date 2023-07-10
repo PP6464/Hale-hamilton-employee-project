@@ -29,9 +29,6 @@ export default function Profile(props: ProfileProps) {
   );
 
   useEffect(() => {
-    console.log(props.state);
-    console.log(auth.currentUser?.displayName);
-    console.log(auth.currentUser?.photoURL);
     if (!auth.currentUser) {
       navigate("/");
     }
@@ -127,10 +124,8 @@ export default function Profile(props: ProfileProps) {
                   filePic,
                   "data_url"
                 );
-                console.log("pu: " + (await getDownloadURL(result.ref)));
                 setPhotoURL(await getDownloadURL(result.ref));
               }
-              console.log("PHOTOURL: " + photoURL);
               await updateProfile(auth.currentUser!, {
                 displayName: name,
                 photoURL: photoURL,
@@ -148,6 +143,20 @@ export default function Profile(props: ProfileProps) {
             }}
           >
             Save Changes
+          </button>
+          <button
+            id="discard-changes-button"
+            onClick={() => {
+              setFilePic(null);
+              setPhotoURL(
+                auth.currentUser?.photoURL ??
+                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+              );
+              setName(auth.currentUser?.displayName ?? "");
+              toggleIsModifyingProfile();
+            }}
+          >
+            Discard Changes
           </button>
         </div>
       ) : (

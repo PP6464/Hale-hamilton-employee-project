@@ -13,7 +13,8 @@
 }
 
 #modify-profile-button,
-#save-profile-button {
+#save-profile-button,
+#discard-changes-button {
   border-radius: 20px;
   border: none;
   background: #ff5858;
@@ -26,8 +27,13 @@
   margin-top: 2px;
 }
 
+#discard-changes-button {
+  margin-top: 10px;
+}
+
 #modify-profile-button:hover,
-#save-profile-button:hover {
+#save-profile-button:hover,
+#discard-changes-button:hover {
   background: #dd3636;
   cursor: pointer;
 }
