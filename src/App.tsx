@@ -2,7 +2,7 @@ import "./styles.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { AppState, User } from "./redux/state";
-import { logIn } from "./redux/actions";
+import { logIn, logOut } from "./redux/actions";
 import Navbar from "./navbar/navbar";
 import Auth from "./auth/auth";
 import Home from "./home/home";
@@ -15,13 +15,14 @@ import Reports from "./reports/reports";
 interface AppProps {
     appState: AppState;
     logIn: (user: User, accessToken: string) => {};
+    logOut: () => {}
 }
 
 function App(props: AppProps) {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Navbar state={props.appState}/>}>
+                <Route path="/" element={<Navbar state={props.appState} logOut={props.logOut}/>}>
                     <Route index element={<Auth logIn={props.logIn}/>}/>
                     <Route path="/home" element={<Home/>}/>
                     <Route path="/profile" element={<Profile state={props.appState}/>}/>
@@ -40,7 +41,8 @@ const mapStateToProps = (state: AppState) => ({
 });
 const mapDispatchToProps = (dispatch: any) => ({
     logIn: (user: User, accessToken: string) =>
-        dispatch(logIn(user, accessToken))
+        dispatch(logIn(user, accessToken)),
+    logOut: () => dispatch(logOut())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

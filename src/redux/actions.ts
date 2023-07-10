@@ -7,3 +7,7 @@ export const logIn = (user: User, accessToken: string) => ({
         accessToken: accessToken,
     }
 });
+
+export const logOut = () => ({
+    type: "logOut",
+})

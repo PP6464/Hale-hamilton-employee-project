@@ -26,9 +26,14 @@ function reducer(state = initialState, action: Action) {
         case "logIn":
             return {
                 ...state,
-                uid: action.payload.user.uid,
+                user: action.payload.user,
                 accessToken: action.payload.accessToken,
-                userIsAdmin: action.payload.user.userIsAdmin,
+            };
+        case "logOut":
+            return {
+                ...state,
+                user: null,
+                accessToken: null,
             };
         default:
             return state;
