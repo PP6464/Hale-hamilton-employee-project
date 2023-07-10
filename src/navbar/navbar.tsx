@@ -41,7 +41,7 @@ export default function Navbar(props: NavbarProps) {
                     </h2>
                     {location.pathname !== "/" ? (
                         <IconButton
-                            title={menuOn ? "Show menu" : "Hide menu"}
+                            title={!menuOn ? "Show menu" : "Hide menu"}
                             onClick={toggleMenuOn}
                             style={{color: "white"}}
                         >
