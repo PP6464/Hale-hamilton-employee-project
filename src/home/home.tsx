@@ -17,7 +17,7 @@ interface Employee {
 }
 
 interface Filter {
-  type: string;
+  type: "email" | "name";
   value: string;
 }
 
