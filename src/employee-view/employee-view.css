@@ -26,3 +26,15 @@
   cursor: pointer;
   background: #eee;
 }
+
+#employee-shift-add {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 50px;
+}
+
+#employee-shift-add:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
