@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, OAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getMessaging } from "firebase/messaging";
+import { getMessaging, onMessage } from "firebase/messaging";
 import { getStorage } from "firebase/storage";
 
 const app = initializeApp({
@@ -23,3 +23,8 @@ export const auth = getAuth(app);
 export const firestore = getFirestore(app);
 export const storage = getStorage(app);
 export const messaging = getMessaging(app);
+export const onMessageListener = () => new Promise((resolve) => {
+  onMessage(messaging, (payload) => {
+    resolve(payload)
+  })
+})

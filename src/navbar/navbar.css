@@ -3,13 +3,14 @@
 }
 
 #navbar-outer {
-  width: 100vw;
+  width: 100%;
   height: calc(10vh + 20px);
   box-shadow: 0 0 5px #cccccc;
   background: #243a47;
   color: white;
   position: fixed;
   top: 0;
+  z-index: 5;
 }
 
 #navbar-content {
@@ -26,9 +27,22 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  font-size: 1.5em;
 }
 
 #navbar-content img {
   height: 10vh;
   padding-right: 10px;
+}
+
+@media only screen and (max-width: 650px) {
+  #navbar-content h2 {
+    left: calc(100% - 100px);
+  }
+
+  #navbar-content img {
+    height: 10vh;
+    max-width: 10vh;
+    padding-right: 10px;
+  }
 }
