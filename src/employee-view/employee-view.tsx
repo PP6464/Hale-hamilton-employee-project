@@ -8,12 +8,10 @@ import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import DatePicker from "@mui/x-date-pickers/DatePicker";
 import { Employee } from "../home/home";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 
 interface EmployeeViewProps {
   employee: Employee;
@@ -67,7 +65,7 @@ export default function EmployeeView(props: EmployeeViewProps) {
         );
       }
     );
-  }, []);
+  }, [props.employee.uid]);
 
   return (
     <div className="container">
@@ -85,7 +83,7 @@ export default function EmployeeView(props: EmployeeViewProps) {
           <ClearIcon />
         </IconButton>
       </div>
-      <div id="employee-shift-add">
+      <div id="employee-shift-add" onClick={toggleAddingShift}>
         <AddIcon />
         <p>Add a shift</p>
       </div>
@@ -96,8 +94,7 @@ export default function EmployeeView(props: EmployeeViewProps) {
           <RadioGroup
             row
             aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue="female"
-            name="radio-buttons-group"
+            defaultValue="morning"
             value={time}
             onChange={(e) => {
               setTime(e.target.value as "morning" | "evening");
@@ -114,6 +111,22 @@ export default function EmployeeView(props: EmployeeViewProps) {
               label="Evening"
             />
           </RadioGroup>
+          <div id="employee-shift-add-submit" onClick={async () => {
+            await fetch(`${apiURL}shifts/add?admin=${auth.currentUser!.uid}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                employee: props.employee.uid,
+                time: time,
+                date: date,
+              })
+            })
+          }}>
+            <AddIcon />
+            <p>Add this shift</p>
+          </div>
         </div>
       ) : (
         <></>
@@ -136,7 +149,7 @@ export default function EmployeeView(props: EmployeeViewProps) {
             onClick={async () => {
               await fetch(
                 apiURL +
-                  "delete-shift/" +
+                  "shift/delete/" +
                   e.id +
                   "?admin=" +
                   auth.currentUser?.uid,
