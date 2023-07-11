@@ -29,4 +29,4 @@ export const onMessageListener = () =>
       resolve(payload);
     });
   });
-const apiURL = "https://hale-hamilton-employee-api-9f992efecf47.herokuapp.com/";
+export const apiURL = "https://hale-hamilton-employee-api-9f992efecf47.herokuapp.com/";
