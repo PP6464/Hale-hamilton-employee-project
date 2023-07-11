@@ -36,9 +36,7 @@ export default function Navbar(props: NavbarProps) {
       <div id="navbar-outer">
         <div id="navbar-content">
           <img src="/assets/logo.svg" alt="" />
-          <h2 style={{ fontSize: windowWidth < 500 ? "1em" : "1.5em" }}>
-            Employee Management
-          </h2>
+          <h2>{windowWidth > 650 ? "Employee Management" : "EMS"}</h2>
           {location.pathname !== "/" ? (
             <IconButton
               title={!menuOn ? "Show menu" : "Hide menu"}
