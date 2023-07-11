@@ -10,6 +10,8 @@ import Profile from "./profile/profile";
 import ChatWithOthers from "./chat/chat";
 import Notifications from "./notifications/notificiatons";
 import Reports from "./reports/reports";
+import { onMessageListener } from "./firebase/firebase";
+import { useEffect, useState } from "react";
 
 interface AppProps {
   appState: AppState;
@@ -18,7 +20,32 @@ interface AppProps {
   updateUser: (name?: string, photoURL?: string) => {};
 }
 
+type Notification = {
+  title: string;
+  body: string;
+};
+
 function App(props: AppProps) {
+  const iconURL =
+    "https://firebasestorage.googleapis.com/v0/b/hale-hamilton-employee-project.appspot.com/o/assets%2Flogo-black.svg?alt=media&token=e05f14b4-a7c0-4ee9-b0df-18c1c9e208bf";
+  const [notification, setNotification] = useState<Notification | null>(null);
+
+  useEffect(() => {
+    if (notification) {
+      new Notification(notification.title, {
+        body: notification.body,
+        icon: iconURL,
+      });
+    }
+  }, [notification]);
+
+  onMessageListener().then((payload: any) => {
+    setNotification({
+      title: payload.notification.title,
+      body: payload.notification.body,
+    });
+  });
+
   return (
     <BrowserRouter>
       <Routes>

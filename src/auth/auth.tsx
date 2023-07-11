@@ -1,12 +1,18 @@
 import "./auth.css";
-import { auth, microsoftProvider, firestore } from "../firebase/firebase";
+import {
+  auth,
+  microsoftProvider,
+  firestore,
+  messaging,
+} from "../firebase/firebase";
 import { updateProfile } from "firebase/auth";
 import {
   signInWithPopup,
   OAuthProvider,
   signInWithCredential,
 } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { getToken } from "firebase/messaging";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { User } from "../redux/state";
@@ -33,9 +39,20 @@ export default function Auth(props: AuthProps) {
       const firestoreUser = await getDoc(doc(firestore, `users/${user.uid}`));
       let isAdmin = false;
       let isNewUser = firestoreUser.exists();
+      let deviceToken = "";
+      try {
+        deviceToken = await getToken(messaging, {
+          vapidKey:
+            "BJ9PFDLMA_LSZPvKTC-59oq3squJWsLCbWfxysed1a7bOIfsCUJ92UcYh1wnyKKlGblk-Whx5nu9p3EXjm-EJzY",
+        });
+      } catch {}
       if (isNewUser) {
         // Retrieve whether or not they are admin
         isAdmin = firestoreUser.get("isAdmin");
+        if (deviceToken !== "")
+          await updateDoc(firestoreUser.ref, {
+            tokens: arrayUnion(deviceToken),
+          });
       } else {
         // Ask if they are an admin
         while (true) {
@@ -50,6 +67,7 @@ export default function Auth(props: AuthProps) {
             photoURL:
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
             isAdmin: isAdmin,
+            tokens: deviceToken !== "" ? [deviceToken] : null,
           });
           await updateProfile(user, {
             photoURL:
