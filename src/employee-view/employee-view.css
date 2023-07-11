@@ -30,11 +30,26 @@
 #employee-shift-add {
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 10px;
   border-radius: 50px;
 }
 
 #employee-shift-add:hover {
   background-color: #eee;
+  cursor: pointer;
+}
+
+#employee-shift-add-submit {
+  background: #ff5858;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 50px;
+}
+
+#employee-shift-add-submit:hover {
+  background: #dd3636;
   cursor: pointer;
 }
