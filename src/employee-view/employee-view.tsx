@@ -1,11 +1,19 @@
 import "./employee-view.css";
 import { useEffect, useState } from "react";
-import { firestore } from "../firebase/firebase";
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { firestore, apiURL, auth } from "../firebase/firebase";
+import { collection, onSnapshot, query, where, doc } from "firebase/firestore";
 import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
+import DatePicker from "@mui/x-date-pickers/DatePicker";
 import { Employee } from "../home/home";
+import dayjs, { Dayjs } from "dayjs";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 interface EmployeeViewProps {
   employee: Employee;
@@ -15,18 +23,29 @@ interface EmployeeViewProps {
 interface Shift {
   time: "morning" | "evening";
   date: string;
+  id: string;
 }
 
 export default function EmployeeView(props: EmployeeViewProps) {
   const [shifts, setShifts] = useState<Shift[]>([]);
+  const [date, setDate] = useState(dayjs());
+  const [time, setTime] = useState<"morning" | "evening">("morning");
+  const [isAddingShift, setIsAddingShift] = useState(false);
 
   function normalise(a: number) {
     return a / Math.abs(a);
   }
 
+  function toggleAddingShift() {
+    setIsAddingShift(!isAddingShift);
+  }
+
   useEffect(() => {
     onSnapshot(
-      query(collection(firestore, `users/${props.employee.uid}/shifts`)),
+      query(
+        collection(firestore, `shifts`),
+        where("employee", "==", doc(firestore, `users/${props.employee.uid}`))
+      ),
       (snapshot) => {
         setShifts(
           snapshot.docs
@@ -34,6 +53,7 @@ export default function EmployeeView(props: EmployeeViewProps) {
               return {
                 date: e.data()["date"],
                 time: e.data()["time"],
+                id: e.id,
               };
             })
             .sort((a, b) => {
@@ -65,15 +85,68 @@ export default function EmployeeView(props: EmployeeViewProps) {
           <ClearIcon />
         </IconButton>
       </div>
+      <div id="employee-shift-add">
+        <AddIcon />
+        <p>Add a shift</p>
+      </div>
+      {isAddingShift ? (
+        <div>
+          <DatePicker label="Shift date" value={date} onChange={setDate} />
+          <label htmlFor="employee-shift-add-time">Time: </label>
+          <RadioGroup
+            row
+            aria-labelledby="demo-radio-buttons-group-label"
+            defaultValue="female"
+            name="radio-buttons-group"
+            value={time}
+            onChange={(e) => {
+              setTime(e.target.value as "morning" | "evening");
+            }}
+          >
+            <FormControlLabel
+              value="morning"
+              control={<Radio />}
+              label="Morning"
+            />
+            <FormControlLabel
+              value="evening"
+              control={<Radio />}
+              label="Evening"
+            />
+          </RadioGroup>
+        </div>
+      ) : (
+        <></>
+      )}
+      <p
+        style={{
+          display: shifts.length > 0 ? "none" : "block",
+          marginTop: "10px",
+        }}
+      >
+        There are no shifts to display
+      </p>
       {shifts.map((e) => (
-        <div className="shift">
+        <div className="shift" key={e.id}>
           <div>
             <h1>{e.date.split("-").reverse().join("/")}</h1>
             <p>{e.time.substring(0, 1).toUpperCase() + e.time.substring(1)}</p>
           </div>
-          <IconButton onClick={async () => {
-              
-          }} title="Delete this shift">
+          <IconButton
+            onClick={async () => {
+              await fetch(
+                apiURL +
+                  "delete-shift/" +
+                  e.id +
+                  "?admin=" +
+                  auth.currentUser?.uid,
+                {
+                  method: "DELETE",
+                }
+              );
+            }}
+            title="Delete this shift"
+          >
             <DeleteIcon />
           </IconButton>
         </div>

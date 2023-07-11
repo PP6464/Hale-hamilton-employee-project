@@ -23,8 +23,10 @@ export const auth = getAuth(app);
 export const firestore = getFirestore(app);
 export const storage = getStorage(app);
 export const messaging = getMessaging(app);
-export const onMessageListener = () => new Promise((resolve) => {
-  onMessage(messaging, (payload) => {
-    resolve(payload)
-  })
-})
+export const onMessageListener = () =>
+  new Promise((resolve) => {
+    onMessage(messaging, (payload) => {
+      resolve(payload);
+    });
+  });
+export const apiURL = "https://hale-hamilton-employee-api-9f992efecf47.herokuapp.com/";
