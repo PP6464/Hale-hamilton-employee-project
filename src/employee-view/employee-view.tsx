@@ -6,7 +6,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
-import DatePicker from "@mui/x-date-pickers/DatePicker";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Employee } from "../home/home";
 import dayjs from "dayjs";
 import Radio from "@mui/material/Radio";
@@ -89,7 +89,13 @@ export default function EmployeeView(props: EmployeeViewProps) {
       </div>
       {isAddingShift ? (
         <div>
-          <DatePicker label="Shift date" value={date} onChange={setDate} />
+          <DatePicker
+            label="Shift date"
+            value={date}
+            onChange={(d) => {
+              if (d) setDate(d);
+            }}
+          />
           <label htmlFor="employee-shift-add-time">Time: </label>
           <RadioGroup
             row
@@ -111,19 +117,25 @@ export default function EmployeeView(props: EmployeeViewProps) {
               label="Evening"
             />
           </RadioGroup>
-          <div id="employee-shift-add-submit" onClick={async () => {
-            await fetch(`${apiURL}shifts/add?admin=${auth.currentUser!.uid}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                employee: props.employee.uid,
-                time: time,
-                date: date,
-              })
-            })
-          }}>
+          <div
+            id="employee-shift-add-submit"
+            onClick={async () => {
+              await fetch(
+                `${apiURL}shifts/add?admin=${auth.currentUser!.uid}`,
+                {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    employee: props.employee.uid,
+                    time: time,
+                    date: date,
+                  }),
+                }
+              );
+            }}
+          >
             <AddIcon />
             <p>Add this shift</p>
           </div>
