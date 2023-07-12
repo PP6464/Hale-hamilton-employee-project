@@ -215,7 +215,7 @@ export default function Home(props: HomeProps) {
         </div>
         <div id="employee-shift-add" onClick={() => setIsAddingShift(!isAddingShift)}>
           <AddIcon />
-          <p>Add a shift</p>
+          <p>Request to add a shift</p>
         </div>
         {isAddingShift ? (
           <div id="employee-add-shift-details">
