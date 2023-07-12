@@ -18,7 +18,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import ReactModal from "react-modal";
 import "dayjs/locale/en-gb";
 import firebase from "firebase/compat";
-import DocumentReference = firebase.firestore.DocumentReference;
 
 interface EmployeeViewProps {
   employee: Employee;
