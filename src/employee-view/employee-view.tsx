@@ -29,7 +29,6 @@ export interface Shift {
   time: "morning" | "evening";
   date: string;
   id: string;
-  employee: DocumentReference;
 }
 
 export default function EmployeeView(props: EmployeeViewProps) {
@@ -65,7 +64,6 @@ export default function EmployeeView(props: EmployeeViewProps) {
           snapshot.docs
             .map((e) => {
               return {
-                employee: e.data()["employee"],
                 date: e.data()["date"],
                 time: e.data()["time"],
                 id: e.id,
