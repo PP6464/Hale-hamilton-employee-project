@@ -6,19 +6,32 @@
     height: calc(90vh - 20px);
 }
 
+#auth-outer h1 {
+    margin-bottom: 10px;
+}
+
+#auth-outer input {
+    border: none;
+    background: #eee;
+    padding: 10px;
+    border-radius: 20px;
+    margin: 5px;
+    width: min(75%, 400px);
+}
+
 #auth-logo {
     width: min(50%, 400px);
 }
 
 #auth-button:hover {
     cursor: pointer;
-    background: #0088dd;
+    background: #dd3636;
 }
 
 #auth-button {
-    background: #0099ff;
+    background: #ff5858;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     padding: 10px;

@@ -1,20 +1,19 @@
 import "./auth.css";
 import {
   auth,
-  microsoftProvider,
   firestore,
   messaging,
 } from "../firebase/firebase";
 import { updateProfile } from "firebase/auth";
 import {
-  signInWithPopup,
-  OAuthProvider,
-  signInWithCredential,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  UserCredential,
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getToken } from "firebase/messaging";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { User } from "../redux/state";
 
 interface AuthProps {
@@ -23,6 +22,8 @@ interface AuthProps {
 
 export default function Auth(props: AuthProps) {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -30,15 +31,31 @@ export default function Auth(props: AuthProps) {
     }
   }, [navigate]);
 
-  async function signInWithMicrosoft() {
+  async function signIn() {
     try {
-      const result = await signInWithPopup(auth, microsoftProvider);
-      const credential = OAuthProvider.credentialFromResult(result)!;
-      const accessToken = credential.accessToken!;
-      const user = (await signInWithCredential(auth, credential)).user;
-      const firestoreUser = await getDoc(doc(firestore, `users/${user.uid}`));
+      if (!email.match('^[\\w-]+@circor.com$')) {
+        alert("Incorrectly formatted email");
+        setEmail('');
+        return;
+      }
+      if (password.length < 10) {
+        alert("Password too short: needs to be at least 10 characters");
+        setPassword('');
+        return;
+      }
+      let credential: UserCredential | null = null;
+      try {
+        credential = await createUserWithEmailAndPassword(auth, email, password);
+      } catch (e) {
+        try {
+          credential = await signInWithEmailAndPassword(auth, email, password);
+        } catch {
+          alert("There has been an error whilst logging in. Please check that your detail sare correct and retry.");
+        }
+      }
+      const firestoreUser = await getDoc(doc(firestore, `users/${credential!.user.uid}`));
+      let isExistingUser = firestoreUser.exists();
       let isAdmin = false;
-      let isNewUser = firestoreUser.exists();
       let deviceToken = "";
       try {
         deviceToken = await getToken(messaging, {
@@ -46,7 +63,7 @@ export default function Auth(props: AuthProps) {
             "BJ9PFDLMA_LSZPvKTC-59oq3squJWsLCbWfxysed1a7bOIfsCUJ92UcYh1wnyKKlGblk-Whx5nu9p3EXjm-EJzY",
         });
       } catch {}
-      if (isNewUser) {
+      if (isExistingUser) {
         // Retrieve whether or not they are admin
         isAdmin = firestoreUser.get("isAdmin");
         if (deviceToken !== "")
@@ -54,6 +71,10 @@ export default function Auth(props: AuthProps) {
             tokens: arrayUnion(deviceToken),
           });
       } else {
+        let name = null;
+        while (name === null) {
+          name = prompt("What is your name?");
+        }
         // Ask if they are an admin
         while (true) {
           const input = prompt(
@@ -61,32 +82,34 @@ export default function Auth(props: AuthProps) {
           );
           if (!(input === "true" || input === "false")) continue;
           isAdmin = input === "true";
-          await setDoc(doc(firestore, `users/${user.uid}`), {
-            email: user.email ?? "blank-email@circor.com",
-            name: user.displayName ?? "Blank display name",
+          await setDoc(firestoreUser.ref, {
+            email: email,
+            name: name,
             photoURL:
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
             isAdmin: isAdmin,
             tokens: deviceToken !== "" ? [deviceToken] : null,
           });
-          await updateProfile(user, {
+          await updateProfile(credential!.user, {
+            displayName: name,
             photoURL:
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
           });
+          await auth.currentUser?.reload();
           break;
         }
       }
       props.logIn(
         {
-          name: user.displayName!,
-          photoURL: isNewUser
+          name: credential!.user.displayName!,
+          photoURL: isExistingUser
             ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-            : user.photoURL!,
-          email: user.email!,
+            : credential!.user.photoURL!,
+          email: email,
           isAdmin: isAdmin,
-          uid: user.uid,
+          uid: credential!.user.uid,
         },
-        accessToken
+        "",
       );
       navigate("/home");
     } catch (e: any) {
@@ -101,9 +124,10 @@ export default function Auth(props: AuthProps) {
     <div id="auth-outer">
       <img id="auth-logo" src="/assets/logo-black.svg" alt="" />
       <h1>Login</h1>
-      <button id="auth-button" onClick={signInWithMicrosoft}>
-        <img src="/assets/microsoft.svg" alt="" />
-        <h3>Sign in with Microsoft</h3>
+      <input placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} type="email"/>
+      <input placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} type="password"/>
+      <button id="auth-button" onClick={signIn}>
+        <h3>Sign in</h3>
       </button>
     </div>
   );
