@@ -40,7 +40,8 @@
   cursor: pointer;
 }
 
-#employee-shift-add-submit {
+#employee-shift-add-submit,
+#employee-shift-reschedule-submit {
   background: #ff5858;
   display: flex;
   align-items: center;
@@ -49,7 +50,39 @@
   border-radius: 50px;
 }
 
-#employee-shift-add-submit:hover {
+#employee-shift-add-submit:hover,
+#employee-shift-reschedule-submit:hover {
   background: #dd3636;
   cursor: pointer;
+}
+
+#employee-shift-reschedule-submit {
+  background: white;
+}
+
+#employee-shift-reschedule-submit:hover {
+  background: #eee;
+}
+
+#employee-reschedule-shift-modal {
+  z-index: 10;
+  width: 500px;
+  height: 290px;
+  position: absolute !important;
+  top: 50vh !important;
+  left: 50vw !important;
+  transform: translate(-50%, -50%);
+}
+
+#employee-add-shift-details,
+#employee-reschedule-shift-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#employee-add-shift-details > label,
+#employee-reschedule-shift-details > label {
+  margin-top: 10px;
 }
