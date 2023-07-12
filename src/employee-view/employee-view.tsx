@@ -17,7 +17,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import ReactModal from "react-modal";
 import "dayjs/locale/en-gb";
-import firebase from "firebase/compat";
 
 interface EmployeeViewProps {
   employee: Employee;
