@@ -15,7 +15,7 @@ export default function Reports(props: ReportsProps) {
     if (!auth.currentUser) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   return props.state.user?.isAdmin ?? false ? (
     <div>

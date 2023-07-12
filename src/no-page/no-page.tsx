@@ -16,7 +16,7 @@ export default function NoPage(props: NoPageProps) {
     if (!auth.currentUser) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <div id="no-page-container">

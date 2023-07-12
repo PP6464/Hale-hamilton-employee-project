@@ -32,7 +32,7 @@ export default function Profile(props: ProfileProps) {
     if (!auth.currentUser) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   function toggleIsModifyingProfile() {
     setIsModifyingProfile(!isModifyingProfile);

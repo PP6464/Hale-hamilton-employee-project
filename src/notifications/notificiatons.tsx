@@ -15,7 +15,7 @@ export default function Notifications(props: NotificationsProps) {
         if (!auth.currentUser) {
             navigate("/");
         }
-    }, []);
+    }, [navigate]);
 
     return (
         <div>

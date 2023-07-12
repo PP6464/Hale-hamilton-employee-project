@@ -15,7 +15,7 @@ export default function ChatWithOthers(props: ChatProps) {
         if (!auth.currentUser) {
             navigate("/");
         }
-    }, []);
+    }, [navigate]);
 
     return (
         <div>

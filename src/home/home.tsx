@@ -54,7 +54,7 @@ export default function Home(props: HomeProps) {
     if (!auth.currentUser) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
   useEffect(() => {
     if (props.state.user?.isAdmin ?? false) {
       setLoading(true);
@@ -75,7 +75,7 @@ export default function Home(props: HomeProps) {
         }
       );
     }
-  }, []);
+  }, [props.state.user?.isAdmin]);
 
   return !loading ? (
     props.state.user?.isAdmin ?? false ? (

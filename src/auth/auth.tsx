@@ -28,7 +28,7 @@ export default function Auth(props: AuthProps) {
     if (auth.currentUser) {
       navigate("/home");
     }
-  }, []);
+  }, [navigate]);
 
   async function signInWithMicrosoft() {
     try {
