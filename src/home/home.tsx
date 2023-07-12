@@ -256,7 +256,7 @@ export default function Home(props: HomeProps) {
               id="employee-shift-add-submit"
               onClick={async () => {
               await fetch(`${apiURL}shift/request/add`, {
-                method: "GET",
+                method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
@@ -333,7 +333,7 @@ export default function Home(props: HomeProps) {
               await fetch(
                 `${apiURL}shift/request/update/${rescheduleShiftId}`,
                 {
-                  method: "GET",
+                  method: "POST",
                   headers: {
                     "Content-Type": "application/json",
                   },
@@ -375,7 +375,7 @@ export default function Home(props: HomeProps) {
                 await fetch(
                   `${apiURL}shift/request/delete/${e.id}?by=${auth.currentUser!.uid}`,
                   {
-                    method: "GET",
+                    method: "POST",
                   }
                   );
               }}
