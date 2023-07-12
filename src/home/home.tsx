@@ -255,8 +255,8 @@ export default function Home(props: HomeProps) {
             <div
               id="employee-shift-add-submit"
               onClick={async () => {
-              await fetch(`${apiURL}shift/add?admin=${auth.currentUser!.uid}`, {
-                method: "PUT",
+              await fetch(`${apiURL}shift/request/add`, {
+                method: "GET",
                 headers: {
                   "Content-Type": "application/json",
                 },
@@ -331,11 +331,9 @@ export default function Home(props: HomeProps) {
               id="employee-shift-reschedule-submit"
               onClick={async () => {
               await fetch(
-                `${apiURL}shift/update/${rescheduleShiftId}?admin=${
-                  auth.currentUser!.uid
-                }`,
+                `${apiURL}shift/request/update/${rescheduleShiftId}`,
                 {
-                  method: "PATCH",
+                  method: "GET",
                   headers: {
                     "Content-Type": "application/json",
                   },
@@ -375,13 +373,9 @@ export default function Home(props: HomeProps) {
               <IconButton
                 onClick={async () => {
                 await fetch(
-                  apiURL +
-                    "shift/delete/" +
-                    e.id +
-                    "?admin=" +
-                    auth.currentUser?.uid,
+                  `${apiURL}shift/request/delete/${e.id}?by=${auth.currentUser!.uid}`,
                   {
-                    method: "DELETE",
+                    method: "GET",
                   }
                   );
               }}
