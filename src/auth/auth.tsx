@@ -33,7 +33,7 @@ export default function Auth(props: AuthProps) {
 
   async function signIn() {
     try {
-      if (!email.match('^[\\w-]+@circor.com$')) {
+      if (!email.match('^[\\w-]+@[\\w-]+.[a-zA-Z]+$')) {
         alert("Incorrectly formatted email");
         setEmail('');
         return;
