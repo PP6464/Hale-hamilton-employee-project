@@ -8,7 +8,7 @@ import Home from "./home/home";
 import NoPage from "./no-page/no-page";
 import Profile from "./profile/profile";
 import ChatWithOthers from "./chat/chat";
-import Notifications from "./notifications/notificiatons";
+import Notifications from "./notifications/notifications";
 import Reports from "./reports/reports";
 import { onMessageListener } from "./firebase/firebase";
 import { useEffect, useState } from "react";
