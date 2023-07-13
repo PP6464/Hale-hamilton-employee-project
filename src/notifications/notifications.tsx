@@ -50,7 +50,7 @@ export default function Notifications(props: NotificationsProps) {
     useEffect(() => {
         setLoading(true);
         onSnapshot(
-            query(collection(firestore, 'notifications'), where("users", "array-contains", doc(firestore, `users/${props.state.user?.uid}`))),
+            query(collection(firestore, 'notifications'), where("users", "array-contains", doc(firestore, `users/${auth.currentUser!.uid}`))),
             (snapshot) => {
                 setNotifications(
                     snapshot.docs.map((e) => {
@@ -58,7 +58,7 @@ export default function Notifications(props: NotificationsProps) {
                             title: e.data()['title'],
                             body: e.data()['body'],
                             time: e.data()['time'].toDate(),
-                            read: (e.data()['readBy'] as DocumentReference[])?.map((e) => e.path).includes(doc(firestore, `users/${props.state.user?.uid}`).path) ?? false,
+                            read: (e.data()['readBy'] as DocumentReference[])?.map((e) => e.path).includes(doc(firestore, `users/${auth.currentUser!.uid}`).path) ?? false,
                             id: e.id,
                         };
                     }).filter((e) => {
@@ -79,7 +79,7 @@ export default function Notifications(props: NotificationsProps) {
                 setLoading(false);
             },
         );
-        }, [props.state.user?.uid, filter, order]);
+        }, [filter, order]);
 
     return loading ? (
         <p>Loading...</p>
@@ -144,11 +144,11 @@ export default function Notifications(props: NotificationsProps) {
                             <IconButton title={e.read ? "Mark notification as unread" : "Mark notification as read"} onClick={async () => {
                                 if (e.read) {
                                     await updateDoc(doc(firestore, `notifications/${e.id}`), {
-                                        readBy: arrayRemove(doc(firestore, `users/${props.state.user?.uid}`)),
+                                        readBy: arrayRemove(doc(firestore, `users/${auth.currentUser!.uid}`)),
                                     });
                                 } else {
                                     await updateDoc(doc(firestore, `notifications/${e.id}`), {
-                                        readBy: arrayUnion(doc(firestore, `users/${props.state.user?.uid}`)),
+                                        readBy: arrayUnion(doc(firestore, `users/${auth.currentUser!.uid}`)),
                                     });
                                 }
                             }}>

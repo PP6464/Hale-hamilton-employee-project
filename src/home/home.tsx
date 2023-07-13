@@ -103,10 +103,10 @@ export default function Home(props: HomeProps) {
           setLoading(false);
         }
       );
-    } else if (props.state.user) {
+    } else if (auth.currentUser) {
       setLoading(true);
       onSnapshot(
-        query(collection(firestore, "shifts"), where("employee", "==", doc(firestore, `users/${props.state.user!.uid}`))),
+        query(collection(firestore, "shifts"), where("employee", "==", doc(firestore, `users/${auth.currentUser!.uid}`))),
         (snapshot) => {
           setShifts(
             snapshot.docs.map((e) => {
@@ -128,7 +128,7 @@ export default function Home(props: HomeProps) {
         },
       );
     }
-  }, [props.state.user?.isAdmin, props.state.user]);
+  }, [props.state.user?.isAdmin]);
 
   return !loading ? (
     props.state.user?.isAdmin ?? false ? (
@@ -204,7 +204,7 @@ export default function Home(props: HomeProps) {
           }}
         />
       )
-    ) : props.state.user ? (
+    ) : auth.currentUser ? (
       <div>
         <div id="employee-view-header">
           <img src={auth.currentUser!.photoURL!} alt="" />

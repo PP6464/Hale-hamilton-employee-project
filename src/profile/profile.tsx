@@ -97,7 +97,7 @@ export default function Profile(props: ProfileProps) {
             onClick={() => {
               setFilePic(null);
               setPhotoURL(
-                props.state.user?.photoURL ??
+                auth.currentUser!.photoURL ??
                   "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
               );
             }}
@@ -109,7 +109,7 @@ export default function Profile(props: ProfileProps) {
             onClick={async () => {
               if (filePic !== null) {
                 const filesCurrentlyPresent = await listAll(
-                  ref(storage, `users/${props.state.user!.uid}`)
+                  ref(storage, `users/${auth.currentUser!.uid}`)
                 );
                 filesCurrentlyPresent.items.map(
                   async (e) => await deleteObject(e)
@@ -117,7 +117,7 @@ export default function Profile(props: ProfileProps) {
                 const result = await uploadString(
                   ref(
                     storage,
-                    `/users/${props.state.user!.uid}/profile_pic.${
+                    `/users/${auth.currentUser!.uid}/profile_pic.${
                       filePic.split(";")[0].split("/")[1].split("+")[0]
                     }`
                   ),
@@ -132,7 +132,7 @@ export default function Profile(props: ProfileProps) {
               });
               await auth.currentUser!.reload();
               await updateDoc(
-                doc(firestore, `users/${props.state.user!.uid}`),
+                doc(firestore, `users/${auth.currentUser!.uid}`),
                 {
                   name: name,
                   photoURL: photoURL,

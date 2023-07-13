@@ -100,7 +100,7 @@ export default function Navbar(props: NavbarProps) {
             ) : (
               <></>
             )}
-            {props.state.user !== null ? (
+            {auth.currentUser !== null ? (
               <NavbarOption
                 onClick={async () => {
                   setIndex(6);
