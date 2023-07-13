@@ -213,9 +213,11 @@ export default function Home(props: HomeProps) {
             <p>{auth.currentUser!.email}</p>
           </div>
         </div>
-        <div id="employee-shift-add" onClick={() => setIsAddingShift(!isAddingShift)}>
-          <AddIcon />
-          <p>Request to add a shift</p>
+        <div style={{ display: "flex", marginBottom: "10px", alignItems: "center", justifyContent: "center" }}>
+          <div id="employee-shift-add" onClick={() => setIsAddingShift(!isAddingShift)}>
+            <AddIcon />
+            <p>Request to add a shift</p>
+          </div>
         </div>
         {isAddingShift ? (
           <div id="employee-add-shift-details">
