@@ -10,6 +10,8 @@ import Profile from "./profile/profile";
 import ChatWithOthers from "./chat/chat";
 import Notifications from "./notifications/notifications";
 import Changes from "./changes/changes";
+import OneToOneChat from "./chat/121/121";
+import GroupChat from "./chat/group/group";
 import { onMessageListener } from "./firebase/firebase";
 import { useEffect, useState } from "react";
 
@@ -70,6 +72,14 @@ function App(props: AppProps) {
             element={<ChatWithOthers state={props.appState} />}
           />
           <Route path="/changes" element={<Changes state={props.appState} />} />
+          <Route
+            path="/chat/group/:id"
+            element={<GroupChat/>}
+          />
+          <Route
+            path="/chat/121/:id"
+            element={<OneToOneChat/>}
+          />
           <Route path="*" element={<NoPage state={props.appState} />} />
         </Route>
       </Routes>
