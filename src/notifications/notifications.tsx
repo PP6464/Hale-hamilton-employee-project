@@ -30,7 +30,7 @@ export default function Notifications(props: NotificationsProps) {
     const navigate = useNavigate();
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [loading, setLoading] = useState(false);
-    const [filter, setFilter] = useState<"read"|"unread"|"all">("all");
+    const [filter, setFilter] = useState<"read"|"unread"|"all">("unread");
     const [order, setOrder] = useState<"asc"|"desc">("desc");
     const [isShowingFilter, setIsShowingFilter] = useState(false);
     
@@ -99,7 +99,7 @@ export default function Notifications(props: NotificationsProps) {
                 <RadioGroup
                     row
                     id="notification-filter"
-                    defaultValue="all"
+                    defaultValue="unread"
                     value={filter}
                     onChange={(e) => setFilter(e.target.value as "read" | "unread" | "all")}>
                     <FormControlLabel
