@@ -278,7 +278,7 @@ export default function Home(props: HomeProps) {
           ) : (
             <></>
             )}
-        <p style={{display: shifts.length === 0 ? 'block' : 'none'}}>No shifts to display</p>
+        <p style={{display: shifts.length === 0 ? 'flex' : 'none', alignItems: 'center', justifyContent: 'center'}}>No shifts to display</p>
         <ReactModal
           ariaHideApp={false}
           id="employee-reschedule-shift-modal"
