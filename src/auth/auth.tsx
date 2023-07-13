@@ -47,7 +47,7 @@ export default function Auth(props: AuthProps) {
       }
     }
     redirect();
-  }, [navigate, query]);
+  }, [navigate, query, props]);
 
   async function signIn() {
     try {
