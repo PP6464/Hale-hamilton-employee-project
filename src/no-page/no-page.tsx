@@ -38,7 +38,7 @@ export default function NoPage(props: NoPageProps) {
           </li>
           {props.state.user.isAdmin ? (
             <li>
-              <Link to="/reports">Reports</Link>
+              <Link to="/changes">Changes</Link>
             </li>
           ) : (
             <></>

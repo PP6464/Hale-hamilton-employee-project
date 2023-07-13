@@ -9,7 +9,7 @@ import NoPage from "./no-page/no-page";
 import Profile from "./profile/profile";
 import ChatWithOthers from "./chat/chat";
 import Notifications from "./notifications/notifications";
-import Reports from "./reports/reports";
+import Changes from "./changes/changes";
 import { onMessageListener } from "./firebase/firebase";
 import { useEffect, useState } from "react";
 
@@ -69,7 +69,7 @@ function App(props: AppProps) {
             path="/chat-with-others"
             element={<ChatWithOthers state={props.appState} />}
           />
-          <Route path="/reports" element={<Reports state={props.appState} />} />
+          <Route path="/changes" element={<Changes state={props.appState} />} />
           <Route path="*" element={<NoPage state={props.appState} />} />
         </Route>
       </Routes>
