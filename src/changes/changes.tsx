@@ -53,6 +53,13 @@ export default function Changes(props: ChangesProps) {
         for (let change of snapshot.docs) {
           const administratorData = await getDoc(change.data()['administrator']);
           const employeeData = await getDoc(change.data()['employee']);
+          changesLoaded.push({
+            ...(change.data() as any),
+            timestamp: change.data()['timestamp'].toDate(),
+            employee: employeeData,
+            administrator: administratorData,
+            id: change.id,
+          });
         }
         changesLoaded = changesLoaded.filter(async (e) => {
           if (dates.length === 0) return true;
