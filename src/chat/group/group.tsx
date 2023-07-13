@@ -5,6 +5,15 @@ import { useNavigate, Link, useParams } from "react-router-dom";
 import { onSnapshot, query, orderBy, collection } from "firebase/firestore";
 
 export default function GroupChat() {
+    const navigate = useNavigate();
+    const { id } = useParams();
+
+    useEffect(() => {
+        if (auth.currentUser === null) {
+            navigate(`/?route=/chat/group/${id}`)
+        }
+    }, [navigate]);
+
     return (
         <div>Group Chat</div>
     );
