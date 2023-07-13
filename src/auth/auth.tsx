@@ -12,7 +12,7 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getToken } from "firebase/messaging";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { User } from "../redux/state";
 
@@ -24,6 +24,10 @@ export default function Auth(props: AuthProps) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const query = useQuery();
+  function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -111,7 +115,7 @@ export default function Auth(props: AuthProps) {
         },
         "",
       );
-      navigate("/home");
+      navigate(query.get("route") ?? "/home");
     } catch (e: any) {
       if (!(e instanceof Error)) return;
       console.error(e.message);
