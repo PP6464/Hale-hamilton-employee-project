@@ -30,7 +30,7 @@ export default function Profile(props: ProfileProps) {
 
   useEffect(() => {
     if (!auth.currentUser) {
-      navigate("/");
+      navigate("/?route=/profile");
     }
   }, [navigate]);
 

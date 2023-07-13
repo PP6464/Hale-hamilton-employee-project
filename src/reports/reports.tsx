@@ -13,7 +13,7 @@ export default function Reports(props: ReportsProps) {
 
   useEffect(() => {
     if (!auth.currentUser) {
-      navigate("/");
+      navigate("/?route=/reports");
     } else if (!props.state.user!.isAdmin) {
       navigate("/home");
     }

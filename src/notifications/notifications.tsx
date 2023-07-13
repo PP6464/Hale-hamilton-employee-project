@@ -44,7 +44,7 @@ export default function Notifications(props: NotificationsProps) {
 
     useEffect(() => {
         if (!auth.currentUser) {
-            navigate("/");
+            navigate("/?route=notifications");
         }
     }, [navigate]);
     useEffect(() => {

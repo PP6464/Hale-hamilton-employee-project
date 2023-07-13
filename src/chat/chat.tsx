@@ -13,7 +13,7 @@ export default function ChatWithOthers(props: ChatProps) {
 
     useEffect(() => {
         if (!auth.currentUser) {
-            navigate("/");
+            navigate("/?route=/chat-with-others");
         }
     }, [navigate]);
 
