@@ -166,7 +166,7 @@ export default function Profile(props: ProfileProps) {
           <p>
             {props.state.user?.isAdmin ?? false
               ? "Administrator"
-              : "Normal user"}
+              : "Employee"}
           </p>
           <button
             id="modify-profile-button"
