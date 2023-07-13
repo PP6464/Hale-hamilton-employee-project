@@ -31,7 +31,7 @@ export default function Auth(props: AuthProps) {
 
   useEffect(() => {
     if (auth.currentUser) {
-      navigate("/home");
+      navigate(query.get("route") ?? "/home");
     }
   }, [navigate]);
 
