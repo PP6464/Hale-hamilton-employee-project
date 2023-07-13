@@ -62,6 +62,7 @@
 
 #employee-shift-reschedule-submit:hover {
   background: #eee;
+  cursor: pointer;
 }
 
 #employee-reschedule-shift-modal {
