@@ -33,7 +33,7 @@ export default function Auth(props: AuthProps) {
     if (auth.currentUser) {
       navigate(query.get("route") ?? "/home");
     }
-  }, [navigate]);
+  }, [navigate, query]);
 
   async function signIn() {
     try {
