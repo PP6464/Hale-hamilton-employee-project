@@ -161,7 +161,7 @@ export default function Home(props: HomeProps) {
               }}
             />
             <label htmlFor="filter-select" style={{ margin: "0 10px" }}>
-              Filter by:{" "}
+              Filter by:
             </label>
             <select
               id="filter-select"
