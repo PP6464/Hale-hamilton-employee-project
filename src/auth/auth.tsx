@@ -30,9 +30,23 @@ export default function Auth(props: AuthProps) {
   }
 
   useEffect(() => {
-    if (auth.currentUser) {
-      navigate(query.get("route") ?? "/home");
+    async function redirect() {
+      if (auth.currentUser) {
+        const data = await getDoc(doc(firestore, `users/${auth.currentUser!.uid}`));
+        props.logIn(
+        {
+            name: auth.currentUser!.displayName!,
+            email: auth.currentUser!.email!,
+            uid: auth.currentUser!.uid,
+            photoURL: auth.currentUser!.photoURL!,
+            isAdmin: data.data()!['isAdmin'],
+          },
+          "",
+        );
+        navigate(query.get("route") ?? "/home");
+      }
     }
+    redirect();
   }, [navigate, query]);
 
   async function signIn() {
@@ -112,8 +126,7 @@ export default function Auth(props: AuthProps) {
           email: email,
           isAdmin: isAdmin,
           uid: credential!.user.uid,
-        },
-        "",
+        }, "",
       );
       navigate(query.get("route") ?? "/home");
     } catch (e: any) {
