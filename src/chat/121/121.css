@@ -1,0 +1,79 @@
+#one-to-one-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+#one-to-one-header div {
+    display: flex;
+    flex-direction: column;
+}
+
+#one-to-one-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+#one-to-one-messages {
+    margin-bottom: 50px;
+}
+
+#one-to-one-msg {
+    position: fixed;
+    bottom: 0;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    background: white;
+}
+
+#one-to-one-msg input {
+    padding: 10px;
+    border: none;
+    background: #eee;
+    border-radius: 50px;
+    width: calc(100vw - 90px);
+    height: 50px;
+}
+
+#one-to-one-msg button {
+    width: 40px;
+    height: 40px;
+    margin: 0 10px;
+}
+
+.message {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    text-align: justify;
+    border-radius: 10px;
+    max-width: 80%;
+}
+
+.message img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.message[data-from-user=false] div p {
+    color: grey;
+}
+
+.message[data-from-user=true] div p {
+    color: #aaa;
+}
+
+.message[data-from-user=true] {
+    background: maroon;
+    color: white;
+}
+
+.message[data-from-user=false] {
+    background: white;
+    color: black;
+}
