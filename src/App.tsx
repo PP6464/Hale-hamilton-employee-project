@@ -77,7 +77,7 @@ function App(props: AppProps) {
             element={<GroupChat/>}
           />
           <Route
-            path="/chat/121/:id"
+            path="/chat/121/:uid"
             element={<OneToOneChat/>}
           />
           <Route path="*" element={<NoPage state={props.appState} />} />
