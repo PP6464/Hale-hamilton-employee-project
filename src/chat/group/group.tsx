@@ -12,7 +12,7 @@ export default function GroupChat() {
         if (auth.currentUser === null) {
             navigate(`/?route=/chat/group/${id}`)
         }
-    }, [navigate]);
+    }, [navigate, id]);
 
     return (
         <div>Group Chat</div>
