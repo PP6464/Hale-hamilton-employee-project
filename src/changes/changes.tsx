@@ -146,7 +146,7 @@ export default function Changes(props: ChangesProps) {
       <p style={{margin: "5px 0", display: changes.length === 0 ? "block" : "none"}}>No changes to display</p>
       {
         changes.map((e) => (
-          <div className="change" onClick={() => setSelectedChange(e)}>
+          <div className="change" onClick={() => setSelectedChange(e)} key={e.id}>
             <div>
               <h1>{e.type === "PUT" ? "Shift addition" : e.type === "PATCH" ? "Shift reschedule" : "Shift deletion"}</h1>
               <p>Administrator: {e.administrator.data()!['name']}</p>
