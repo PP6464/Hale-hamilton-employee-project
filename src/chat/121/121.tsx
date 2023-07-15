@@ -89,6 +89,7 @@ export default function OneToOneChat() {
             <div id="one-to-one-msg">
                 <input placeholder={`Send a message to ${userData.name}`} value={msgText} onChange={(e) => setMsgText(e.target.value)} />
                 <IconButton onClick={async () => {
+                    if (msgText === "") return;
                     await fetch(`${apiURL}chat/message`, {
                         method: "PUT",
                         headers: {
