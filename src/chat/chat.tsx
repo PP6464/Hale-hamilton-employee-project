@@ -1,13 +1,13 @@
 import "./chat.css";
-import { AppState } from "../redux/state";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { auth, firestore, apiURL } from "../firebase/firebase";
-import { User } from "../redux/state";
+import {AppState} from "../redux/state";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {auth, firestore, apiURL} from "../firebase/firebase";
+import {User} from "../redux/state";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import ReactModal from "react-modal";
-import { onSnapshot, query, where, collection, DocumentReference, doc, documentId } from "firebase/firestore";
+import {onSnapshot, query, where, collection, DocumentReference, doc, documentId} from "firebase/firestore";
 
 interface ChatProps {
     state: AppState;
@@ -79,14 +79,17 @@ export default function ChatWithOthers(props: ChatProps) {
             <h1>Chat with others</h1>
             <h3>One to One</h3>
             <div id="one-to-one-search">
-                <input placeholder={filter.type === "name" ? "Search by name" : "Search by email"} value={filter.value} onChange={(e) => {
-                    setFilter({
-                        ...filter,
-                        value: e.target.value,
-                    });
-                }}/>
+                <input placeholder={filter.type === "name" ? "Search by name" : "Search by email"} value={filter.value}
+                       onChange={(e) => {
+                           setFilter({
+                               ...filter,
+                               value: e.target.value,
+                           });
+                       }}/>
                 <label htmlFor="chat-filter-one-to-one">Filter by:</label>
-                <select id="chat-filter-one-to-one" onChange={(e) => {setFilter({...filter, type: e.target.selectedIndex === 0 ? "name" : "email"});}}>
+                <select id="chat-filter-one-to-one" onChange={(e) => {
+                    setFilter({...filter, type: e.target.selectedIndex === 0 ? "name" : "email"});
+                }}>
                     <option value="name">Name</option>
                     <option value="email">Email</option>
                 </select>
@@ -98,7 +101,7 @@ export default function ChatWithOthers(props: ChatProps) {
                         className="user"
                         key={e.uid}
                         onClick={() => {
-                           navigate(`/chat/121/${e.uid}`);
+                            navigate(`/chat/121/${e.uid}`);
                         }}
                     >
                         <img src={e.photoURL} alt=""/>
@@ -109,7 +112,8 @@ export default function ChatWithOthers(props: ChatProps) {
                     </div>
                 ))
             }
-            <p style={{display: users.filter((e) => e.isAdmin).length === 0 ? "block" : "none"}}>No administrators to display</p>
+            <p style={{display: users.filter((e) => e.isAdmin).length === 0 ? "block" : "none"}}>No administrators to
+                display</p>
             <p style={{margin: "5px"}}>Employees</p>
             {
                 users.filter((e) => !e.isAdmin).map((e) => (
@@ -128,7 +132,8 @@ export default function ChatWithOthers(props: ChatProps) {
                     </div>
                 ))
             }
-            <p style={{display: users.filter((e) => !e.isAdmin).length === 0 ? "block" : "none"}}>No employees to display</p>
+            <p style={{display: users.filter((e) => !e.isAdmin).length === 0 ? "block" : "none"}}>No employees to
+                display</p>
             <div style={{display: "flex", alignItems: "center", justifyContent: "center", marginTop: "5px"}}>
                 <h3>Groups</h3>
                 <IconButton title="Create Group" onClick={() => setCreatingGroup(true)}>
@@ -181,7 +186,9 @@ export default function ChatWithOthers(props: ChatProps) {
                 </div>
             </ReactModal>
             <div id="group-search">
-                <input placeholder="Search groups by name" value={groupFilter} onChange={(e) => { setGroupFilter(e.target.value); }}/>
+                <input placeholder="Search groups by name" value={groupFilter} onChange={(e) => {
+                    setGroupFilter(e.target.value);
+                }}/>
             </div>
             {
                 groups.map((e) => (
