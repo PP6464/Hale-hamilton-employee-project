@@ -31,6 +31,7 @@ interface Message {
     text: string;
     user: string;
     timestamp: Date;
+    id: string;
 }
 
 interface UserFilter {
@@ -90,6 +91,7 @@ export default function GroupChat() {
                         ...(e.data()! as any),
                         timestamp: e.data()!['time'].toDate(),
                         user: e.data()!['user'].id,
+                        id: e.id,
                     };
                 }));
             },
@@ -160,7 +162,7 @@ export default function GroupChat() {
                     <h3>Users:</h3>
                     {
                         users.filter((e) => e[userSearchFilter.type].includes(userSearchFilter.value) && e.uid !== auth.currentUser!.uid).map((e) => (
-                            <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", padding: "0 10px"}}>
+                            <div key={e.uid} style={{display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", padding: "0 10px"}}>
                                 <div>
                                     <h1>{e.name}</h1>
                                     <p>{e.email}</p>
@@ -196,16 +198,24 @@ export default function GroupChat() {
             {
                 messages.map((e) => {
                     return (
-                    <div className="message" data-from-user={e.user === auth.currentUser!.uid}>
-                        <div>
-                            <img src={users.filter((f) => f.uid === e.user)[0].photoURL} alt=""/>
-                            <div>
-                                <h3>{users.filter((f) => f.uid === e.user)[0].name}</h3>
-                                <p>{e.timestamp.toISOString().split("T")[1].split(".")[0] + " " + e.timestamp.toISOString().split("T")[0].split("-").reverse().join("/")}</p>
+                        <div key={e.id} style={{
+                            display: "flex",
+                            width: "100vw",
+                            alignContent: "center",
+                            padding: "0 10px",
+                            justifyContent: e.user === auth.currentUser!.uid ? "flex-end" : "flex-start"
+                        }}>
+                            <div className="message" data-from-user={e.user === auth.currentUser!.uid}>
+                                <div>
+                                    <img src={users.filter((f) => f.uid === e.user)[0].photoURL} alt=""/>
+                                    <div>
+                                        <h3>{users.filter((f) => f.uid === e.user)[0].name}</h3>
+                                        <p>{e.timestamp.toISOString().split("T")[1].split(".")[0] + " " + e.timestamp.toISOString().split("T")[0].split("-").reverse().join("/")}</p>
+                                    </div>
+                                </div>
+                                <p>{e.text}</p>
                             </div>
                         </div>
-                        <p>{e.text}</p>
-                    </div>
                 )})
             }
             <div id="one-to-one-msg">

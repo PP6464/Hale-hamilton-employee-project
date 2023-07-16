@@ -71,13 +71,14 @@ export default function OneToOneChat() {
             <div id="one-to-one-messages">
                 {
                     messages.map((e) => (
-                        <div key={e.id}>
-                            <div className="message" data-from-user={e.from.id !== uid} style={{
-                                width: "100vw",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: e.from.id !== uid ? "flex-end" : "flex-end"
-                            }}>
+                        <div key={e.id} style={{
+                            display: "flex",
+                            width: "100vw",
+                            alignContent: "center",
+                            padding: "0 10px",
+                            justifyContent: e.from.id !== uid ? "flex-end" : "flex-start"
+                        }}>
+                            <div className="message" data-from-user={e.from.id !== uid}>
                                 <div>
                                     <img src={e.from.id !== uid ? auth.currentUser!.photoURL! : userData.photoURL}
                                          alt=""/>
