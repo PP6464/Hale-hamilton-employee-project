@@ -72,9 +72,15 @@ export default function OneToOneChat() {
                 {
                     messages.map((e) => (
                         <div key={e.id}>
-                            <div className="message" data-from-user={e.from.id !== uid} style={{width: "100vw", display: "flex", alignItems: "center", justifyContent: e.from.id !== uid ? "flex-end" : "flex-end"}}>
+                            <div className="message" data-from-user={e.from.id !== uid} style={{
+                                width: "100vw",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: e.from.id !== uid ? "flex-end" : "flex-end"
+                            }}>
                                 <div>
-                                    <img src={e.from.id !== uid ? auth.currentUser!.photoURL! : userData.photoURL} alt=""/>
+                                    <img src={e.from.id !== uid ? auth.currentUser!.photoURL! : userData.photoURL}
+                                         alt=""/>
                                     <div>
                                         <h3>{e.from.id !== uid ? auth.currentUser!.displayName : userData.name}</h3>
                                         <p>{e.timestamp.toISOString().split("T")[1].split(".")[0] + " " + e.timestamp.toISOString().split("T")[0].split("-").reverse().join("/")}</p>
@@ -87,7 +93,8 @@ export default function OneToOneChat() {
                 }
             </div>
             <div id="one-to-one-msg">
-                <input placeholder={`Send a message to ${userData.name}`} value={msgText} onChange={(e) => setMsgText(e.target.value)} />
+                <input placeholder={`Send a message to ${userData.name}`} value={msgText}
+                       onChange={(e) => setMsgText(e.target.value)}/>
                 <IconButton onClick={async () => {
                     if (msgText === "") return;
                     await fetch(`${apiURL}chat/message`, {
@@ -103,7 +110,7 @@ export default function OneToOneChat() {
                     });
                     setMsgText("");
                 }} title={msgText === "" ? "Message text required to send" : `Send ${msgText} to ${userData.name}`}>
-                    <SendIcon />
+                    <SendIcon/>
                 </IconButton>
             </div>
         </div>

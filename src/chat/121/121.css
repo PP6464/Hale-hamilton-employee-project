@@ -8,6 +8,8 @@
 #one-to-one-header div {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 #one-to-one-header img {
@@ -52,6 +54,7 @@
     text-align: justify;
     border-radius: 10px;
     max-width: 80%;
+    margin-top: 5px;
 }
 
 .message img {
