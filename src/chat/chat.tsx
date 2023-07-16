@@ -7,7 +7,7 @@ import { User } from "../redux/state";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import ReactModal from "react-modal";
-import { onSnapshot, query, where, collection, DocumentReference, doc } from "firebase/firestore";
+import { onSnapshot, query, where, collection, DocumentReference, doc, documentId } from "firebase/firestore";
 
 interface ChatProps {
     state: AppState;
@@ -49,7 +49,7 @@ export default function ChatWithOthers(props: ChatProps) {
     }, [navigate]);
     useEffect(() => {
         onSnapshot(
-            query(collection(firestore, "users"), where("email", "!=", auth.currentUser!.email)),
+            query(collection(firestore, "users"), where(documentId(), "!=", auth.currentUser!.uid)),
             (snapshot) => {
                 setUsers(snapshot.docs.filter((e) => e.data()[filter.type].toLowerCase().includes(filter.value.toLowerCase())).map((e) => {
                     return {
