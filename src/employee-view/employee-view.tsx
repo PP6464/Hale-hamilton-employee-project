@@ -9,7 +9,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Employee } from "../home/home";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -49,6 +49,15 @@ export default function EmployeeView(props: EmployeeViewProps) {
 
   function toggleAddingShift() {
     setIsAddingShift(!isAddingShift);
+  }
+
+  function shouldDisableDate(date: Dayjs, mode: "add" | "update" = "add") {
+    return shifts
+      .filter((e) => {
+        return !(e.id === rescheduleShiftId && mode === "update");
+      })
+      .map((e) => e.date)
+      .includes(date.format("YYYY-MM-DD"));
   }
 
   useEffect(() => {
@@ -107,6 +116,8 @@ export default function EmployeeView(props: EmployeeViewProps) {
             adapterLocale="en-gb"
           >
             <DatePicker
+              disablePast
+              shouldDisableDate={(date: Dayjs) => shouldDisableDate(date, "add")}
               label="Shift date"
               value={date}
               onChange={(d) => {
@@ -189,6 +200,8 @@ export default function EmployeeView(props: EmployeeViewProps) {
             adapterLocale="en-gb"
           >
             <DatePicker
+              disablePast
+              shouldDisableDate={(date: Dayjs) => shouldDisableDate(date, "update")}
               label="Shift date"
               value={rescheduleDate}
               onChange={(d) => {

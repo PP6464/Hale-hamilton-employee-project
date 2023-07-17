@@ -9,7 +9,7 @@ import { Shift } from "../employee-view/employee-view";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import ReactModal from "react-modal";
 import RadioGroup from "@mui/material/RadioGroup";
 import Radio from "@mui/material/Radio";
@@ -88,10 +88,10 @@ export default function Home(props: HomeProps) {
     if (props.state.user?.isAdmin ?? false) {
       setLoading(true);
       onSnapshot(
-        query(collection(firestore, "users"), where("isAdmin", "==", false)),
+        query(collection(firestore, "users"), where("department", "==", props.state.user?.department)),
         (snapshot) => {
           setEmployees(
-            snapshot.docs.map((e) => {
+            snapshot.docs.filter((e) => !e.data()!['isAdmin']).map((e) => {
               return {
                 email: e.data()["email"],
                 name: e.data()["name"],
@@ -128,13 +128,24 @@ export default function Home(props: HomeProps) {
         },
       );
     }
-  }, [props.state.user?.isAdmin]);
+  }, [props.state.user?.isAdmin, props.state.user?.department]);
+
+  function shouldDisableDate(date: Dayjs, mode: "add" | "update" = "add") {
+    if (!(props.state.user?.isAdmin ?? false)) {
+      return shifts
+        .filter((e) => {
+          return !(e.id === rescheduleShiftId && mode === "update");
+        })
+        .map((e) => e.date)
+        .includes(date.format("YYYY-MM-DD"));
+    } else return false;
+  }
 
   return !loading ? (
     props.state.user?.isAdmin ?? false ? (
       selectedEmployee === null ? (
         <div className="container">
-          <h1 style={{ margin: "10px" }}>Employees</h1>
+          <h1 style={{ margin: "10px" }}>Employees in ${props.state.user?.department}</h1>
           <div
             style={{
               display: "flex",
@@ -226,7 +237,9 @@ export default function Home(props: HomeProps) {
               adapterLocale="en-gb"
               >
               <DatePicker
+                disablePast
                 label="Shift date"
+                shouldDisableDate={(date: Dayjs) => shouldDisableDate(date, "add")}
                 value={date}
                 onChange={(d) => {
                 if (d) setDate(d);
@@ -301,8 +314,10 @@ export default function Home(props: HomeProps) {
               adapterLocale="en-gb"
               >
               <DatePicker
+                disablePast
                 label="Shift date"
                 value={rescheduleDate}
+                shouldDisableDate={(date: Dayjs) => shouldDisableDate(date, "update")}
                 onChange={(d) => {
                 if (d) setRescheduleDate(d);
               }}
