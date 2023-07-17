@@ -222,7 +222,10 @@ export default function GroupChat() {
                 <input placeholder={`Send a message in ${group.name}`} value={msgText}
                        onChange={(e) => setMsgText(e.target.value)}/>
                 <IconButton onClick={async () => {
-                    if (msgText === "") return;
+                    if (msgText === "") {
+                        alert("Text required to send message");
+                        return;
+                    }
                     await fetch(`${apiURL}chat/group/${id}/message?uid=${auth.currentUser!.uid}&text=${msgText}`, {
                         method: "PUT",
                         headers: {
