@@ -61,14 +61,11 @@ export default function Changes(props: ChangesProps) {
             id: change.id,
           });
         }
-        setChanges(changesLoaded.filter((e) => {
-          if (dates.length === 0) return true;
-          return dates.map((f) => f.format("YYYY-MM-DD")).includes(e.timestamp.toISOString().slice(0, 10));
-        }));
+        setChanges(changesLoaded);
         setLoading(false);
       },
     );
-  }, [order, dates]);
+  }, [order]);
 
   useEffect(() => {
     if (!auth.currentUser) {
@@ -142,9 +139,15 @@ export default function Changes(props: ChangesProps) {
           <FormControlLabel control={<Radio/>} value="desc" label="Descending"/>
         </RadioGroup>
       </div>
-      <p style={{margin: "5px 0", display: changes.length === 0 ? "block" : "none"}}>No changes to display</p>
+      <p style={{margin: "5px 0", display: changes.filter((e) => {
+        if (dates.length === 0) return true;
+        return dates.map((f) => f.format("YYYY-MM-DD")).includes(e.timestamp.toISOString().slice(0, 10));
+      }).length === 0 ? "block" : "none"}}>No changes to display</p>
       {
-        changes.map((e) => (
+        changes.filter((e) => {
+          if (dates.length === 0) return true;
+          return dates.map((f) => f.format("YYYY-MM-DD")).includes(e.timestamp.toISOString().slice(0, 10));
+        }).map((e) => (
           <div className="change" onClick={() => setSelectedChange(e)} key={e.id}>
             <div>
               <h1>{e.type === "PUT" ? "Shift addition" : e.type === "PATCH" ? "Shift reschedule" : "Shift deletion"}</h1>
