@@ -261,7 +261,7 @@ export default function EmployeeView(props: EmployeeViewProps) {
         <div className="shift" key={e.id}>
           <div>
             <h1>{e.date.split("-").reverse().join("/")}</h1>
-            <p>{e.time.substring(0, 1).toUpperCase() + e.time.substring(1)}</p>
+            <p>{e.time === "morning" ? "Morning (6am-2pm)" : "Evening (2pm-10pm)"}</p>
           </div>
           <div>
             <IconButton
