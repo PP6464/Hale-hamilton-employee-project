@@ -23,4 +23,4 @@ export const onMessageListener = () =>
       resolve(payload);
     });
   });
-export const apiURL = "https://fair-coveralls-elk.cyclic.app";
+export const apiURL = "https://fair-coveralls-elk.cyclic.app/";
