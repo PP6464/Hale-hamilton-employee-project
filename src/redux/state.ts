@@ -14,6 +14,7 @@ export type User = {
   email: string;
   isAdmin: boolean;
   uid: string;
+  department: string;
 };
 
 const initialState: AppState = {
