@@ -61,11 +61,10 @@ export default function Changes(props: ChangesProps) {
             id: change.id,
           });
         }
-        changesLoaded = changesLoaded.filter(async (e) => {
+        setChanges(changesLoaded.filter((e) => {
           if (dates.length === 0) return true;
-          return dates.map((f) => f.format("YYYY-MM-DD")).includes((await e).timestamp.toISOString().slice(0, 10));
-        });
-        setChanges(changesLoaded);
+          return dates.map((f) => f.format("YYYY-MM-DD")).includes(e.timestamp.toISOString().slice(0, 10));
+        }));
         setLoading(false);
       },
     );
