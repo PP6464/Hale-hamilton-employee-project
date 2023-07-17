@@ -38,7 +38,6 @@
     margin-top: 10px;
 }
 
-#auth-button img {
-    height: 25px;
-    padding-right: 7.5px;
+#auth-button h1 {
+    margin-bottom: 0;
 }
