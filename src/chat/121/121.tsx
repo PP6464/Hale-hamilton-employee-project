@@ -23,6 +23,7 @@ export default function OneToOneChat() {
         isAdmin: false,
         name: "Blank name",
         photoURL: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+        department: "",
         uid: uid ?? "",
     });
     const [msgText, setMsgText] = useState("");
@@ -34,6 +35,7 @@ export default function OneToOneChat() {
             (snapshot) => {
                 setUserData({
                     ...(snapshot.data() as any),
+                    uid: snapshot.id,
                 });
             },
         );
