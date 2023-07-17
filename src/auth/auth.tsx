@@ -4,20 +4,17 @@ import {
   firestore,
   messaging,
 } from "../firebase/firebase";
-import { updateProfile } from "firebase/auth";
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  UserCredential,
 } from "firebase/auth";
-import { doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getToken } from "firebase/messaging";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { User } from "../redux/state";
 
 interface AuthProps {
-  logIn: (user: User, accessToken: string) => {};
+  logIn: (user: User) => {};
 }
 
 export default function Auth(props: AuthProps) {
@@ -33,16 +30,14 @@ export default function Auth(props: AuthProps) {
     async function redirect() {
       if (auth.currentUser) {
         const data = await getDoc(doc(firestore, `users/${auth.currentUser!.uid}`));
-        props.logIn(
-        {
-            name: auth.currentUser!.displayName!,
-            email: auth.currentUser!.email!,
-            uid: auth.currentUser!.uid,
-            photoURL: auth.currentUser!.photoURL!,
-            isAdmin: data.data()!['isAdmin'],
-          },
-          "",
-        );
+        props.logIn({
+          name: auth.currentUser!.displayName!,
+          email: auth.currentUser!.email!,
+          uid: auth.currentUser!.uid,
+          photoURL: auth.currentUser!.photoURL!,
+          isAdmin: data.data()!['isAdmin'],
+          department: data.data()!['department'],
+        });
         navigate(query.get("route") ?? "/home");
       }
     }
@@ -51,83 +46,39 @@ export default function Auth(props: AuthProps) {
 
   async function signIn() {
     try {
-      if (!email.match('^[\\w-]+@[\\w-]+.[a-zA-Z]+$')) {
-        alert("Incorrectly formatted email");
-        setEmail('');
-        return;
-      }
-      if (password.length < 10) {
-        alert("Password too short: needs to be at least 10 characters");
-        setPassword('');
-        return;
-      }
-      let credential: UserCredential | null = null;
       try {
-        credential = await createUserWithEmailAndPassword(auth, email, password);
-      } catch (e) {
+        const credential = await signInWithEmailAndPassword(auth, email, password);
+        let deviceToken = "";
         try {
-          credential = await signInWithEmailAndPassword(auth, email, password);
-        } catch {
-          alert("There has been an error whilst logging in. Please check that your detail sare correct and retry.");
-        }
-      }
-      const firestoreUser = await getDoc(doc(firestore, `users/${credential!.user.uid}`));
-      let isExistingUser = firestoreUser.exists();
-      let isAdmin = false;
-      let deviceToken = "";
-      try {
-        deviceToken = await getToken(messaging, {
-          vapidKey:
+          deviceToken = await getToken(messaging, {
+            vapidKey:
             "BJ9PFDLMA_LSZPvKTC-59oq3squJWsLCbWfxysed1a7bOIfsCUJ92UcYh1wnyKKlGblk-Whx5nu9p3EXjm-EJzY",
-        });
-      } catch {}
-      if (isExistingUser) {
-        // Retrieve whether or not they are admin
-        isAdmin = firestoreUser.get("isAdmin");
-        if (deviceToken !== "")
-          await updateDoc(firestoreUser.ref, {
-            tokens: arrayUnion(deviceToken),
           });
-      } else {
-        let name = null;
-        while (name === null) {
-          name = prompt("What is your name?");
-        }
-        // Ask if they are an admin
-        while (true) {
-          const input = prompt(
-            "Are you using an administrator account? Enter 'true' or 'false':"
-          );
-          if (!(input === "true" || input === "false")) continue;
-          isAdmin = input === "true";
-          await setDoc(firestoreUser.ref, {
+          const firestoreUser = await getDoc(doc(firestore, `users/${credential.user!.uid}`));
+          if (!firestoreUser.exists) {
+            alert('Your account has not been properly set up. Please contact your administrator to resolve this');
+            return;
+          }
+          if (deviceToken !== "") {
+            await updateDoc(firestoreUser.ref, {
+              tokens: arrayUnion(deviceToken),
+            });
+          }
+          props.logIn({
+            name: credential!.user.displayName!,
+            photoURL: credential!.user.photoURL!,
             email: email,
-            name: name,
-            photoURL:
-              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-            isAdmin: isAdmin,
-            tokens: deviceToken !== "" ? [deviceToken] : null,
+            isAdmin: firestoreUser.data()!['isAdmin'],
+            department: firestoreUser.data()!['department'],
+            uid: credential!.user.uid,
           });
-          await updateProfile(credential!.user, {
-            displayName: name,
-            photoURL:
-              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-          });
-          await auth.currentUser?.reload();
-          break;
+          navigate(query.get('route') ?? '/home');
+        } catch {}
+      } catch (e) {
+        if (e instanceof Error) {
+          alert("The following error has occured whilst logging in: " + e.message);
         }
       }
-      props.logIn(
-        {
-          name: credential!.user.displayName!,
-          photoURL: isExistingUser
-            ? "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-            : credential!.user.photoURL!,
-          email: email,
-          isAdmin: isAdmin,
-          uid: credential!.user.uid,
-        }, "",
-      );
       navigate(query.get("route") ?? "/home");
     } catch (e: any) {
       if (!(e instanceof Error)) return;
@@ -144,7 +95,7 @@ export default function Auth(props: AuthProps) {
       <input placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} type="email"/>
       <input placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} type="password"/>
       <button id="auth-button" onClick={signIn}>
-        <h3>Sign in</h3>
+        <h1>Sign in</h1>
       </button>
     </div>
   );
