@@ -1,10 +1,9 @@
 import { User } from "./state";
 
-export const logIn = (user: User, accessToken: string) => ({
+export const logIn = (user: User) => ({
   type: "logIn",
   payload: {
-    user: user,
-    accessToken: accessToken,
+    user: user
   },
 });
 

@@ -1,6 +1,5 @@
 export type AppState = {
   user: User | null;
-  accessToken: string | null;
 };
 
 type Action = {
@@ -19,7 +18,6 @@ export type User = {
 
 const initialState: AppState = {
   user: null,
-  accessToken: null,
 };
 
 function reducer(state = initialState, action: Action) {
@@ -28,13 +26,11 @@ function reducer(state = initialState, action: Action) {
       return {
         ...state,
         user: action.payload.user,
-        accessToken: action.payload.accessToken,
       };
     case "logOut":
       return {
         ...state,
         user: null,
-        accessToken: null,
       };
     case "updateUser":
       return {

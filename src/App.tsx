@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 
 interface AppProps {
   appState: AppState;
-  logIn: (user: User, accessToken: string) => {};
+  logIn: (user: User) => {};
   logOut: () => {};
   updateUser: (name?: string, photoURL?: string) => {};
 }
@@ -91,8 +91,8 @@ const mapStateToProps = (state: AppState) => ({
   appState: state,
 });
 const mapDispatchToProps = (dispatch: any) => ({
-  logIn: (user: User, accessToken: string) =>
-    dispatch(logIn(user, accessToken)),
+  logIn: (user: User) =>
+    dispatch(logIn(user)),
   logOut: () => dispatch(logOut()),
   updateUser: (name?: string, photoURL?: string) =>
     dispatch(updateUser(name, photoURL)),
