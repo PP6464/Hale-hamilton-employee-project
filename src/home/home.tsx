@@ -145,7 +145,7 @@ export default function Home(props: HomeProps) {
     props.state.user?.isAdmin ?? false ? (
       selectedEmployee === null ? (
         <div className="container">
-          <h1 style={{ margin: "10px" }}>Employees in ${props.state.user?.department}</h1>
+          <h1 style={{ margin: "10px" }}>Employees in {props.state.user?.department}</h1>
           <div
             style={{
               display: "flex",
