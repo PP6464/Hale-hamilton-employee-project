@@ -63,7 +63,7 @@ export default function Profile(props: ProfileProps) {
                 document.getElementById("choose-file")!.click();
               }}
             >
-              Choose file
+              <h1>Choose file</h1>
             </button>
           </label>
           <input
@@ -90,7 +90,7 @@ export default function Profile(props: ProfileProps) {
               );
             }}
           >
-            Use initials
+            <h1>Use initials</h1>
           </button>
           <button
             id="revert-to-normal-button"
@@ -102,7 +102,7 @@ export default function Profile(props: ProfileProps) {
               );
             }}
           >
-            Revert to normal
+            <h1>Revert to normal</h1>
           </button>
           <button
             id="save-profile-button"
@@ -142,7 +142,7 @@ export default function Profile(props: ProfileProps) {
               toggleIsModifyingProfile();
             }}
           >
-            Save Changes
+            <h1>Save Changes</h1>
           </button>
           <button
             id="discard-changes-button"
@@ -156,7 +156,7 @@ export default function Profile(props: ProfileProps) {
               toggleIsModifyingProfile();
             }}
           >
-            Discard Changes
+            <h1>Discard Changes</h1>
           </button>
         </div>
       ) : (
