@@ -95,7 +95,7 @@ export default function Auth(props: AuthProps) {
       <input placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} type="email"/>
       <input placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} type="password"/>
       <button id="auth-button" onClick={signIn}>
-        <h1>Login</h1>
+        <h3>Login</h3>
       </button>
     </div>
   );
