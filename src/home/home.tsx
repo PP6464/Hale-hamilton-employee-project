@@ -168,9 +168,8 @@ export default function Home(props: HomeProps) {
             id="add-employee-modal"
             onRequestClose={() => setIsAddingEmployee(false)}>
             <div id="add-employee-content">
-              <h1 style={{marginBottom: "5px"}}>Create new employee</h1>
-              <input value={newEmployeeName} onChange={(e) => setNewEmployeeName(e.target.value)} placeholder="New employee name"/>
-              <p style={{margin: "10px 0"}}>(The employee's user name will be initialised as their name)</p>
+              <h1>Create new employee</h1>
+              <input value={newEmployeeName} onChange={(e) => setNewEmployeeName(e.target.value)} placeholder="New employee name" style={{margin: "10px 0"}}/>
               <input value={newEmployeeEmail} onChange={(e) => setNewEmployeeEmail(e.target.value)} placeholder="New employee email"/>
               <input style={{marginTop: "10px"}} value={newEmployeePassword} onChange={(e) => setNewEmployeePassword(e.target.value)} placeholder="New employee password" type="password"/>
               <p style={{margin: "10px 0"}}>Department: {props.state.user?.department}</p>
