@@ -43,6 +43,13 @@ export default function NoPage(props: NoPageProps) {
           ) : (
             <></>
           )}
+          {props.state.user?.isAdmin ?? false ? (
+            <li>
+              <Link to="/reports">Reports</Link>
+            </li>
+            ) : (
+              <></>
+              )}
         </ul>
       ) : (
         <p>Redirecting you to login page ...</p>

@@ -1,0 +1,10 @@
+.week {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.week:hover {
+    background: #eee;
+    cursor: pointer;
+}

@@ -100,6 +100,19 @@ export default function Navbar(props: NavbarProps) {
             ) : (
               <></>
             )}
+            {props.state.user?.isAdmin ?? false ? (
+              <NavbarOption
+                onClick={() => {
+                setIndex(5);
+                setMenuOn(false);
+                navigate("/reports");
+              }}
+                title="Reports"
+                selected={index === 5}
+              />
+              ) : (
+                <></>
+                )}
             {auth.currentUser !== null ? (
               <NavbarOption
                 onClick={async () => {

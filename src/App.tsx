@@ -12,6 +12,7 @@ import Notifications from "./notifications/notifications";
 import Changes from "./changes/changes";
 import OneToOneChat from "./chat/121/121";
 import GroupChat from "./chat/group/group";
+import Reports from "./reports/reports";
 import { onMessageListener } from "./firebase/firebase";
 import { useEffect, useState } from "react";
 
@@ -79,6 +80,10 @@ function App(props: AppProps) {
           <Route
             path="/chat/121/:uid"
             element={<OneToOneChat/>}
+          />
+          <Route
+            path="/reports"
+            element={<Reports state={props.appState} />}
           />
           <Route path="*" element={<NoPage state={props.appState} />} />
         </Route>
