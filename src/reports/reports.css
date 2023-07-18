@@ -2,9 +2,33 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    width: 100%;
+    padding: 10px;
 }
 
 .week:hover {
     background: #eee;
     cursor: pointer;
+}
+
+.report-shift {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px;
+}
+
+.report-shift div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.report-shift div:nth-child(0) {
+    align-items: flex-start;
+}
+
+.report-shift div:nth-child(2) {
+    align-items: center;
 }
