@@ -32,7 +32,7 @@ export interface Employee {
 }
 
 interface Filter {
-  type: "email" | "name";
+  type: "email" | "name" | "uid";
   value: string;
 }
 
@@ -71,6 +71,10 @@ export default function Home(props: HomeProps) {
             .includes(searchFilter.value.toLowerCase());
         case "name":
           return e.name
+            .toLowerCase()
+            .includes(searchFilter.value.toLowerCase());
+        case "uid":
+          return e.uid
             .toLowerCase()
             .includes(searchFilter.value.toLowerCase());
         default:
@@ -185,6 +189,9 @@ export default function Home(props: HomeProps) {
                 }
                 await fetch(`${apiURL}auth/employee/new?by=${auth.currentUser!.uid}`, {
                   method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
                   body: JSON.stringify({
                     name: newEmployeeName,
                     email: newEmployeeEmail,
@@ -192,6 +199,9 @@ export default function Home(props: HomeProps) {
                     department: props.state.user?.department,
                   }),
                 });
+                setNewEmployeeName("");
+                setNewEmployeeEmail("");
+                setNewEmployeePassword("");
                 setIsAddingEmployee(false);
               }}>
                 <h3>Add employee</h3>
@@ -231,12 +241,13 @@ export default function Home(props: HomeProps) {
               onChange={(e) => {
                 setSearchFilter({
                   ...searchFilter,
-                  type: e.target.selectedIndex === 0 ? "name" : "email",
+                  type: e.target.selectedIndex === 0 ? "name" : e.target.selectedIndex === 1 ? "email" : "uid",
                 });
               }}
             >
               <option value="name">Name</option>
               <option value="name">Email</option>
+              <option value="uid">UID</option>
             </select>
           </div>
           {filteredEmployees().length > 0 ? (
@@ -248,10 +259,36 @@ export default function Home(props: HomeProps) {
                   setSelectedEmployee(e);
                 }}
               >
-                <img src={e.photoURL} alt="" />
-                <div>
-                  <h2>{e.name}</h2>
-                  <p>{e.email}</p>
+                <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                  <img src={e.photoURL} alt="" />
+                  <div>
+                    <h2>{e.name}</h2>
+                    <p>{e.email}</p>
+                    <p>Employee ID: {e.uid}</p>
+                  </div>
+                </div>
+                <div style={{display: "flex", alignItems: "center", justifyContent: "flex-end"}}>
+                  <IconButton title="Reset employee password" onClick={async (el) => {
+                    el.stopPropagation();
+                    let pwd = "";
+                    while (pwd.length < 10) {
+                      pwd = prompt("Enter new password for employee:") ?? "";
+                      if (pwd.length < 10) alert("Password must be at least 10 characters long"); else break;
+                    }
+                    await fetch(`${apiURL}auth/employee/${e.uid}/change?pwd=${pwd}`, {
+                      method: "PATCH",
+                    });
+                  }}>
+                    <EditIcon/>
+                  </IconButton>
+                  <IconButton title="Delete employee account" onClick={async (el) => {
+                    el.stopPropagation();
+                    await fetch(`${apiURL}auth/employee/${e.uid}?by=${auth.currentUser!.uid}`, {
+                      method: "DELETE",
+                    });    
+                  }}>
+                    <DeleteIcon/>
+                  </IconButton>
                 </div>
               </div>
             ))
@@ -343,7 +380,10 @@ export default function Home(props: HomeProps) {
           ) : (
             <></>
             )}
-        <p style={{display: shifts.length === 0 ? 'flex' : 'none', alignItems: 'center', justifyContent: 'center'}}>No shifts to display</p>
+        <div style={{display: "flex", alignItems: "center", justifyContent: "center", width: "100vw"}}>
+          <h3>Upcoming shifts:</h3>
+        </div>
+        <p style={{display: shifts.length === 0 ? 'flex' : 'none', alignItems: 'center', justifyContent: 'center'}}>No upcoming shifts to display</p>
         <ReactModal
           ariaHideApp={false}
           id="employee-reschedule-shift-modal"
@@ -421,7 +461,14 @@ export default function Home(props: HomeProps) {
             </div>
           </div>
         </ReactModal>
-        {shifts.map((e) => (
+        {shifts.filter((e) => {
+        const currentDate = new Date();
+        currentDate.setHours(0);
+        currentDate.setMinutes(0);
+        currentDate.setSeconds(0);
+        currentDate.setMilliseconds(0);
+        return currentDate <= new Date(e.date);
+      }).map((e) => (
           <div className="shift" key={e.id}>
             <div>
               <h1>{e.date.split("-").reverse().join("/")}</h1>
