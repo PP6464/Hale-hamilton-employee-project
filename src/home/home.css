@@ -24,3 +24,40 @@
   border-radius: 20px;
   width: min(75vw, 400px);
 }
+
+#add-employee-modal {
+  z-index: 10;
+  width: 550px;
+  height: 325px;
+  position: absolute !important;
+  top: 50vh !important;
+  left: 50vw !important;
+  transform: translate(-50%, -50%);
+}
+
+#add-employee-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#add-employee-content input {
+  padding: 10px;
+  background: #eee;
+  border-radius: 50px;
+  width: min(400px, 75vw);
+  border: none;
+}
+
+#add-employee-content button {
+  border-radius: 50px;
+  padding: 10px;
+  background: #ff5858;
+  border: none;
+}
+
+#add-employee-content button:hover {
+  background: #dd3636;
+  cursor: pointer;
+}

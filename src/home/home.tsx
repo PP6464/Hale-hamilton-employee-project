@@ -7,6 +7,7 @@ import { AppState } from "../redux/state";
 import { collection, onSnapshot, query, where, doc } from "firebase/firestore";
 import { Shift } from "../employee-view/employee-view";
 import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import dayjs, { Dayjs } from "dayjs";
@@ -18,7 +19,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import "dayjs/locale/en-gb";
-import AddIcon from "@mui/icons-material/Add";
 
 interface HomeProps {
   state: AppState;
@@ -39,6 +39,7 @@ interface Filter {
 export default function Home(props: HomeProps) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [isAddingEmployee, setIsAddingEmployee] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
     null
   );
@@ -58,6 +59,9 @@ export default function Home(props: HomeProps) {
   const [date, setDate] = useState(dayjs());
   const [time, setTime] = useState<"morning" | "evening">("morning");
   const [isAddingShift, setIsAddingShift] = useState(false);
+  const [newEmployeeName, setNewEmployeeName] = useState("");
+  const [newEmployeeEmail, setNewEmployeeEmail] = useState("");
+  const [newEmployeePassword, setNewEmployeePassword] = useState("");
   const filteredEmployees = () => {
     return employees.filter((e) => {
       switch (searchFilter.type) {
@@ -145,7 +149,54 @@ export default function Home(props: HomeProps) {
     props.state.user?.isAdmin ?? false ? (
       selectedEmployee === null ? (
         <div className="container">
-          <h1 style={{ margin: "10px" }}>Employees in {props.state.user?.department}</h1>
+          <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+            <h1 style={{ margin: "10px" }}>Employees in {props.state.user?.department}</h1>
+            <IconButton title="Add employee" onClick={() => {
+              setIsAddingEmployee(true);
+            }}>
+              <AddIcon/>
+            </IconButton>
+          </div>
+          <ReactModal
+            isOpen={isAddingEmployee}
+            ariaHideApp={false}
+            id="add-employee-modal"
+            onRequestClose={() => setIsAddingEmployee(false)}>
+            <div id="add-employee-content">
+              <h1 style={{marginBottom: "5px"}}>Create new employee</h1>
+              <input value={newEmployeeName} onChange={(e) => setNewEmployeeName(e.target.value)} placeholder="New employee name"/>
+              <p style={{margin: "10px 0"}}>(The employee's user name will be initialised as their name)</p>
+              <input value={newEmployeeEmail} onChange={(e) => setNewEmployeeEmail(e.target.value)} placeholder="New employee email"/>
+              <input style={{marginTop: "10px"}} value={newEmployeePassword} onChange={(e) => setNewEmployeePassword(e.target.value)} placeholder="New employee password" type="password"/>
+              <p style={{margin: "10px 0"}}>Department: {props.state.user?.department}</p>
+              <button onClick={async () => {
+                if (newEmployeeName === "") {
+                  alert('New employee name cannot be blank');
+                  return;
+                }
+                if (!newEmployeeEmail.match("^[\\w-]+@[\\w-]+.[\\w-]+$")) {
+                  alert('New employee email must be of the format abc@example.com');
+                  return;
+                }
+                if (newEmployeePassword.length < 10) {
+                  alert('New employee password must be at least 10 characters long');
+                  return;
+                }
+                await fetch(`${apiURL}auth/employee/new?by=${auth.currentUser!.uid}`, {
+                  method: "PUT",
+                  body: JSON.stringify({
+                    name: newEmployeeName,
+                    email: newEmployeeEmail,
+                    password: newEmployeePassword,
+                    department: props.state.user?.department,
+                  }),
+                });
+                setIsAddingEmployee(false);
+              }}>
+                <h3>Add employee</h3>
+              </button>
+            </div>
+          </ReactModal>
           <div
             style={{
               display: "flex",
