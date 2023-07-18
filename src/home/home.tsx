@@ -223,6 +223,8 @@ export default function Home(props: HomeProps) {
                     return "Search by email";
                   case "name":
                     return "Search by name";
+                  case "uid":
+                    return "Search by UID";
                 }
               }).call(null)}
               onChange={(e) => {
@@ -269,12 +271,13 @@ export default function Home(props: HomeProps) {
                 <div style={{display: "flex", alignItems: "center", justifyContent: "flex-end"}}>
                   <IconButton title="Reset employee password" onClick={async (el) => {
                     el.stopPropagation();
-                    let pwd = "";
+                    let pwd: string | null = "";
                     while (pwd.length < 10) {
-                      pwd = prompt("Enter new password for employee:") ?? "";
-                      if (pwd.length < 10) alert("Password must be at least 10 characters long"); else break;
+                      pwd = prompt("Enter new password for employee:");
+                      if (pwd === null) return;
+                      if (pwd!.length < 10) alert("Password must be at least 10 characters long"); else break;
                     }
-                    await fetch(`${apiURL}auth/employee/${e.uid}/change?pwd=${pwd}`, {
+                    await fetch(`${apiURL}auth/employee/${e.uid}/change?pwd=${pwd!}`, {
                       method: "PATCH",
                     });
                   }}>
