@@ -171,13 +171,23 @@ export default function EmployeeView(props: EmployeeViewProps) {
       ) : (
         <></>
       )}
+      <div style={{display: "flex", alignItems: "center", justifyContent: "center", width: "100vw"}}>
+        <h3>Upcoming shifts:</h3>
+      </div>
       <p
         style={{
-          display: shifts.length > 0 ? "none" : "block",
+          display: shifts.filter((e) => {
+            const currentDate = new Date();
+            currentDate.setHours(0);
+            currentDate.setMinutes(0);
+            currentDate.setSeconds(0);
+            currentDate.setMilliseconds(0);
+            return currentDate <= new Date(e.date);
+          }).length > 0 ? "none" : "block",
           marginTop: "10px",
         }}
       >
-        There are no shifts to display
+        There are no upcoming shifts to display
       </p>
       <ReactModal
         ariaHideApp={false}
@@ -258,7 +268,14 @@ export default function EmployeeView(props: EmployeeViewProps) {
           </div>
         </div>
       </ReactModal>
-      {shifts.map((e) => (
+      {shifts.filter((e) => {
+        const currentDate = new Date();
+        currentDate.setHours(0);
+        currentDate.setMinutes(0);
+        currentDate.setSeconds(0);
+        currentDate.setMilliseconds(0);
+        return currentDate <= new Date(e.date);
+      }).map((e) => (
         <div className="shift" key={e.id}>
           <div>
             <h1>{e.date.split("-").reverse().join("/")}</h1>
