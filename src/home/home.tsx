@@ -136,6 +136,7 @@ export default function Home(props: HomeProps) {
 
   function shouldDisableDate(date: Dayjs, mode: "add" | "update" = "add") {
     if (!(props.state.user?.isAdmin ?? false)) {
+      if (date.day() >= 5) return true;
       return shifts
         .filter((e) => {
           return !(e.id === rescheduleShiftId && mode === "update");
