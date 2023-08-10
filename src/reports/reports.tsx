@@ -100,6 +100,7 @@ export default function Reports(props: ReportsProps) {
     ) : selectedWeek === null ? (
         <div className="container">
             <h1 style={{marginBottom: "5px"}}>Reports</h1>
+            <p style={{display: weeks.length === 0 ? "block" : "none"}}>There are no reports to display</p>
             {
                 weeks.map((e) => (
                     <div key={e.start.toISOString()} className="week" onClick={() => {
