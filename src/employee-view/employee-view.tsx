@@ -52,7 +52,7 @@ export default function EmployeeView(props: EmployeeViewProps) {
   }
 
   function shouldDisableDate(date: Dayjs, mode: "add" | "update" = "add") {
-    if (date.day() >= 5) return true;
+    if (date.day() === 0 || date.day() === 6) return true;
     return shifts
       .filter((e) => {
         return !(e.id === rescheduleShiftId && mode === "update");

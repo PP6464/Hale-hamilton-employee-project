@@ -140,7 +140,7 @@ export default function Home(props: HomeProps) {
 
   function shouldDisableDate(date: Dayjs, mode: "add" | "update" = "add") {
     if (!(props.state.user?.isAdmin ?? false)) {
-      if (date.day() >= 5) return true;
+      if (date.day() === 0 || date.day() === 6) return true;
       return shifts
         .filter((e) => {
           return !(e.id === rescheduleShiftId && mode === "update");
@@ -239,6 +239,7 @@ export default function Home(props: HomeProps) {
             </label>
             <select
               id="filter-select"
+              value={searchFilter.type}
               onChange={(e) => {
                 setSearchFilter({
                   ...searchFilter,
@@ -247,7 +248,7 @@ export default function Home(props: HomeProps) {
               }}
             >
               <option value="name">Name</option>
-              <option value="name">Email</option>
+              <option value="email">Email</option>
               <option value="uid">UID</option>
             </select>
           </div>
